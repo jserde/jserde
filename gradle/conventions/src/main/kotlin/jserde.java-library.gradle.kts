@@ -22,11 +22,13 @@ plugins {
     id("java-library")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
+    id("checkstyle")
     id("jacoco")
     id("org.barfuin.gradle.jacocolog")
 }
 
 val javaVersion = JavaLanguageVersion.of(providers.gradleProperty("jserde.java.version").get())
+val checkstyleVersion = "10.23.0"
 val errorproneVersion = "2.36.0"
 val jacocoVersion = "0.8.12"
 val junitVersion = "5.12.0"
@@ -65,6 +67,20 @@ tasks.withType<JavaCompile> {
                 "org.junit.jupiter.api.BeforeEach"
             )
         }
+    }
+}
+
+checkstyle {
+    toolVersion = checkstyleVersion
+}
+
+tasks.withType<Checkstyle> {
+    // NOTE: Checkstyle 10.23.0 doesn't support module-info.java files (https://github.com/checkstyle/checkstyle/issues/8240)
+    exclude("**/module-info.java")
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+        sarif.required.set(true)
     }
 }
 
