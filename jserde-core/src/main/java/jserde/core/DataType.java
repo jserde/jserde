@@ -32,25 +32,22 @@ import java.util.Set;
 public enum DataType {
     /**
      * The <i>null</i> value.
-     * <p>
-     * Typically corresponds to the Java {@code null} reference.
-     * </p>
+     *
+     * <p>Typically corresponds to the Java {@code null} reference.
      */
     NULL,
 
     /**
      * The boolean values: <i>true</i> and <i>false</i>.
-     * <p>
-     * Corresponds to the Java {@code boolean} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code boolean} primitive.
      */
     BOOLEAN,
 
     /**
      * Signed bytes.
-     * <p>
-     * Corresponds to the Java {@code byte} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code byte} primitive.
      */
     BYTE {
         @Override
@@ -61,9 +58,8 @@ public enum DataType {
 
     /**
      * Signed 16-bit integers.
-     * <p>
-     * Corresponds to the Java {@code short} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code short} primitive.
      */
     SHORT {
         @Override
@@ -74,9 +70,8 @@ public enum DataType {
 
     /**
      * Signed 32-bit integers.
-     * <p>
-     * Corresponds to the Java {@code int} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code int} primitive.
      */
     INT {
         @Override
@@ -87,9 +82,8 @@ public enum DataType {
 
     /**
      * Signed 64-bit integers.
-     * <p>
-     * Corresponds to the Java {@code long} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code long} primitive.
      */
     LONG {
         @Override
@@ -100,9 +94,8 @@ public enum DataType {
 
     /**
      * Arbitrary-precision signed integers.
-     * <p>
-     * Corresponds to the Java {@link BigInteger} class.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@link BigInteger} class.
      */
     BIG_INTEGER {
         @Override
@@ -113,9 +106,8 @@ public enum DataType {
 
     /**
      * Single-precision 32-bit IEEE 754 floating point numbers.
-     * <p>
-     * Corresponds to the Java {@code float} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code float} primitive.
      */
     FLOAT {
         @Override
@@ -126,9 +118,8 @@ public enum DataType {
 
     /**
      * Double-precision 64-bit IEEE 754 floating point numbers.
-     * <p>
-     * Corresponds to the Java {@code double} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code double} primitive.
      */
     DOUBLE {
         @Override
@@ -139,9 +130,8 @@ public enum DataType {
 
     /**
      * Arbitrary-precision signed decimal numbers.
-     * <p>
-     * Corresponds to the Java {@link BigDecimal} class.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@link BigDecimal} class.
      */
     BIG_DECIMAL {
         @Override
@@ -152,33 +142,29 @@ public enum DataType {
 
     /**
      * 16-bit Unicode character.
-     * <p>
-     * Corresponds to the Java {@code char} primitive.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code char} primitive.
      */
     CHAR,
 
     /**
      * String of 16-bit Unicode characters.
-     * <p>
-     * Corresponds to the Java {@link String} class.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@link String} class.
      */
     STRING,
 
     /**
      * Array of signed bytes.
-     * <p>
-     * Corresponds to the Java {@code byte[]} class.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@code byte[]} class.
      */
     BYTE_ARRAY,
 
     /**
      * Variably sized heterogeneous sequence of values.
-     * <p>
-     * Corresponds to the Java {@link List} interface.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@link List} interface.
      */
     SEQUENCE {
         @Override
@@ -189,9 +175,8 @@ public enum DataType {
 
     /**
      * Variably sized heterogeneous key-value pairing.
-     * <p>
-     * Corresponds to the Java {@link Map} interface.
-     * </p>
+     *
+     * <p>Corresponds to the Java {@link Map} interface.
      */
     MAP {
         @Override
