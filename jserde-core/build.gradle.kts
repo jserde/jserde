@@ -14,23 +14,8 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-    includeBuild("gradle/conventions")
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("jserde.java-library")
 }
 
-rootProject.name = "jserde"
-
-include(":jserde-core")
+description = "Core JSerde components."
