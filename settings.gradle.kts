@@ -35,6 +35,7 @@ rootProject.name = "jserde"
 
 include(
     ":jserde-core",
+    ":jserde-docs",
     ":jserde-io",
     ":jserde-test",
 )

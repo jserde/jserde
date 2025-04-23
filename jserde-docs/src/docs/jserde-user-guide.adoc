@@ -1,0 +1,74 @@
+= JSerde User Guide
+Laurent Pireyn
+:doctype: article
+:lang: en
+:icons: font
+:source-highlighter: rouge
+:toc:
+
+== Overview
+
+*JSerde* is a Java framework for __ser__ializing and __de__serializing data.
+
+It is inspired by the https://serde.rs/[Serde] framework in Rust.
+
+== Core concepts
+
+Serializing a value is the process of producing a representation that can be transported or stored.
+Deserializing is the reverse process of producing the same value from this representation.
+
+.Different representations
+====
+The number 42 can be serialized in different ways, for example:
+
+- as a byte whose value is 42
+- as a sequence of two characters: `4` and `2`
+====
+
+JSerde introduces a unique _data model_ that allows the decoupling of the following roles:
+
+- the _serializer_ knows how to produce data representing a value in the data model
+- the _format_ knows how to write/read data in the data model to/from a specific representation
+- the _deserializer_ knows how to produce a value from the data in the data model
+
+.Serialization
+[plantuml]
+....
+left to right direction
+
+node "Value" as val
+[Serializer] as ser
+node "Data model" as dm
+[Format] as fmt
+node "Representation" as rep
+
+val --> ser
+ser --> dm
+dm --> fmt
+fmt --> rep
+....
+
+.Deserialization
+[plantuml]
+....
+left to right direction
+
+node "Value" as val
+[Deserializer] as de
+node "Data model" as dm
+[Format] as fmt
+node "Representation" as rep
+
+rep --> fmt
+fmt --> dm
+dm --> de
+de --> val
+....
+
+This separation of concerns makes the serialization strategies completely independent of the various formats.
+
+[NOTE]
+====
+The serializer and deserializer roles are often tightly related as they must follow the same rules to be compatible.
+They can however be used independently of each other if only serialization or deserialization is needed.
+====
