@@ -14,27 +14,16 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-    includeBuild("gradle/conventions")
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("jserde.java-library")
 }
 
-rootProject.name = "jserde"
+description = "I/O utilities used by the JSerde projects."
 
-include(
-    ":jserde-core",
-    ":jserde-io",
-    ":jserde-test",
-)
+testing {
+    jvmTestSuites {
+        dependencies {
+            implementation(project(":jserde-test"))
+        }
+    }
+}
