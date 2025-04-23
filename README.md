@@ -4,6 +4,10 @@
 
 It is inspired by the [Serde](https://serde.rs/) framework in Rust.
 
+## Status
+
+[![Build](https://github.com/jserde/jserde/actions/workflows/build.yaml/badge.svg)](https://github.com/jserde/jserde/actions/workflows/build.yaml)
+
 ## Changelog
 
 See [CHANGELOG](CHANGELOG.md).
