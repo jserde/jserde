@@ -14,26 +14,15 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-    includeBuild("gradle/conventions")
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("jserde.java-library")
 }
 
-rootProject.name = "jserde"
+description = "Test utilities used by the JSerde projects."
 
-include(
-    ":jserde-core",
-    ":jserde-test",
-)
+dependencies {
+    // TODO: Use the same version as the jserde.java-library convention
+    api(platform("org.junit:junit-bom:5.12.0"))
+    api("org.junit.jupiter:junit-jupiter")
+    api("org.junit.jupiter:junit-jupiter-params")
+}
