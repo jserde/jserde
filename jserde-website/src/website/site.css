@@ -14,29 +14,11 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-    includeBuild("gradle/conventions")
+.brand {
+    font-size: xx-large;
+    font-weight: bold;
 }
 
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
+.copyright {
+    font-size: small;
 }
-
-plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
-}
-
-rootProject.name = "jserde"
-
-include(
-    ":jserde-core",
-    ":jserde-docs",
-    ":jserde-io",
-    ":jserde-test",
-    ":jserde-website",
-)
