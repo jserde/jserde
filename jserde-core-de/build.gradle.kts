@@ -14,30 +14,21 @@
  * limitations under the License.
  */
 
-pluginManagement {
-    repositories {
-        gradlePluginPortal()
-    }
-    includeBuild("gradle/conventions")
-}
-
-dependencyResolutionManagement {
-    repositories {
-        mavenCentral()
-    }
-}
-
 plugins {
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("jserde.java-library")
 }
 
-rootProject.name = "jserde"
+description = "Core JSerde deserialization components."
 
-include(
-    ":jserde-core",
-    ":jserde-core-de",
-    ":jserde-docs",
-    ":jserde-io",
-    ":jserde-test",
-    ":jserde-website",
-)
+dependencies {
+    api(project(":jserde-core"))
+    implementation(project(":jserde-io"))
+}
+
+testing {
+    jvmTestSuites {
+        dependencies {
+            implementation(project(":jserde-test"))
+        }
+    }
+}
