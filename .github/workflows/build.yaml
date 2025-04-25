@@ -25,7 +25,9 @@ jobs:
         uses: EnricoMi/publish-unit-test-result-action@v2
         if: always()
         with:
-          files: jserde-*/build/test-results/test/TEST-*.xml
+          files: |
+            jserde-*/build/test-results/test/TEST-*.xml
+            jserde-*/build/test-results/jsonTestSuite/TEST-*.xml
           comment_mode: off
 
   dependency-submission:
