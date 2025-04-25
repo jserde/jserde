@@ -42,6 +42,7 @@ include(
     ":jserde-io",
     ":jserde-json",
     ":jserde-json-de",
+    ":jserde-json-model",
     ":jserde-json-ser",
     ":jserde-service-de",
     ":jserde-service-ser",
