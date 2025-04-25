@@ -45,6 +45,8 @@ import org.jspecify.annotations.Nullable;
  * @author Laurent Pireyn
  */
 public final class JsonValueWriter implements DataValueWriter {
+    public static final JsonStyle DEFAULT_STYLE = JsonStyle.MINIFIED;
+
     // TODO #improvement: Make max nesting depth configurable
     private static final int MAX_NESTING_DEPTH = 100;
 
@@ -134,12 +136,10 @@ public final class JsonValueWriter implements DataValueWriter {
         @Override
         public final void close() throws IOException {
             if (!closed) {
-                try {
-                    writeContainerEnd();
-                } finally {
-                    closed = true;
-                    afterCloseContainerWriter();
-                }
+                closed = true;
+                afterCloseContainerWriter();
+                beforeContainerChild();
+                writeContainerEnd();
             }
         }
 
@@ -162,7 +162,9 @@ public final class JsonValueWriter implements DataValueWriter {
         public <T extends @Nullable Object> void serializeElement(T value, ValueSerializer<? super T> serializer) throws IOException {
             if (index > 0) {
                 writer.write(',');
+                afterComma();
             }
+            beforeContainerChild();
             serializer.serializeValue(value, JsonValueWriter.this);
             ++index;
         }
@@ -188,9 +190,12 @@ public final class JsonValueWriter implements DataValueWriter {
         public <T extends @Nullable Object> void serializeField(String name, T value, ValueSerializer<? super T> serializer) throws IOException {
             if (index > 0) {
                 writer.write(',');
+                afterComma();
             }
+            beforeContainerChild();
             serializeString(name);
             writer.write(':');
+            afterColon();
             serializer.serializeValue(value, JsonValueWriter.this);
             ++index;
         }
@@ -202,6 +207,7 @@ public final class JsonValueWriter implements DataValueWriter {
     }
 
     private final Writer writer;
+    private final JsonStyle style;
 
     // NOTE: Number formats are instance fields because NumberFormat is not thread-safe
     // TODO #optimization: Find a more efficient way to format floating-point numbers
@@ -227,24 +233,64 @@ public final class JsonValueWriter implements DataValueWriter {
     private int nestingDepth;
 
     /**
-     * Creates a new {@code JsonValueWriter} on the given {@link Writer}.
+     * String used for each indent level.
+     */
+    private final String indentString;
+
+    /**
+     * Creates a new {@code JsonValueWriter} on the given {@link Writer},
+     * using {@link #DEFAULT_STYLE}.
      *
      * @param writer the writer
      */
     // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
     public JsonValueWriter(Writer writer) {
+        this(writer, DEFAULT_STYLE);
+    }
+
+    /**
+     * Creates a new {@code JsonValueWriter} on the given {@link Writer},
+     * using the given {@link JsonStyle}.
+     *
+     * @param writer the writer
+     * @param style the style
+     */
+    // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
+    public JsonValueWriter(Writer writer, JsonStyle style) {
         this.writer = writer;
+        this.style = style;
+        // Prepare indent string based on style
+        final var indentStyle = style.getIndentStyle();
+        final var indentSize = style.getIndentSize();
+        if (indentStyle != IndentStyle.NONE && indentSize > 0) {
+            final var ch = indentStyle == IndentStyle.SPACE ? ' ' : '\t';
+            indentString = String.valueOf(ch).repeat(indentSize);
+        } else {
+            indentString = "";
+        }
     }
 
     /**
      * Creates a new {@code JsonValueWriter} on the given {@link OutputStream},
-     * using {@link JsonFormat#DEFAULT_CHARSET}.
+     * using {@link JsonFormat#DEFAULT_CHARSET} and {@link #DEFAULT_STYLE}.
      *
      * @param output the output stream
      */
     // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
     public JsonValueWriter(OutputStream output) {
-        this(new OutputStreamWriter(output, JsonFormat.DEFAULT_CHARSET));
+        this(output, DEFAULT_STYLE);
+    }
+
+    /**
+     * Creates a new {@code JsonValueWriter} on the given {@link OutputStream},
+     * using {@link JsonFormat#DEFAULT_CHARSET} and the given {@link JsonStyle}.
+     *
+     * @param output the output stream
+     * @param style the style
+     */
+    // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
+    public JsonValueWriter(OutputStream output, JsonStyle style) {
+        this(new OutputStreamWriter(output, JsonFormat.DEFAULT_CHARSET), style);
     }
 
     // DataValueWriter methods
@@ -384,5 +430,29 @@ public final class JsonValueWriter implements DataValueWriter {
     private JsonStructWriter openStructWriter() throws IOException {
         beforeOpenContainerWriter();
         return new JsonStructWriter();
+    }
+
+    // Style-related methods
+
+    private void beforeContainerChild() throws IOException {
+        final var indentStyle = style.getIndentStyle();
+        if (indentStyle != IndentStyle.NONE) {
+            writer.write('\n');
+            for (int i = 0; i < nestingDepth; ++i) {
+                writer.write(indentString);
+            }
+        }
+    }
+
+    private void afterComma() throws IOException {
+        if (style.isSpaceAfterComma()) {
+            writer.write(' ');
+        }
+    }
+
+    private void afterColon() throws IOException {
+        if (style.isSpaceAfterColon()) {
+            writer.write(' ');
+        }
     }
 }

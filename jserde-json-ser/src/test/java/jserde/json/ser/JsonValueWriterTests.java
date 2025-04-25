@@ -20,6 +20,8 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.util.List;
+import java.util.Map;
 import jserde.core.ser.ValueSerializer;
 import jserde.core.ser.standard.StandardBigDecimalSerializer;
 import jserde.core.ser.standard.StandardBigIntegerSerializer;
@@ -31,6 +33,7 @@ import jserde.core.ser.standard.StandardFloatSerializer;
 import jserde.core.ser.standard.StandardIntSerializer;
 import jserde.core.ser.standard.StandardLongSerializer;
 import jserde.core.ser.standard.StandardNullSerializer;
+import jserde.core.ser.standard.StandardObjectSerializer;
 import jserde.core.ser.standard.StandardShortSerializer;
 import jserde.core.ser.standard.StandardStringSerializer;
 import jserde.test.AbstractTests;
@@ -39,6 +42,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 
 class JsonValueWriterTests extends AbstractTests {
     <T extends @Nullable Object> String serializeValue(T value, ValueSerializer<? super T> serializer) throws IOException {
@@ -198,5 +202,49 @@ class JsonValueWriterTests extends AbstractTests {
     })
     void testSerializeString(String value, String json) throws IOException {
         assertEquals(json, serializeValue(value, StandardStringSerializer.INSTANCE));
+    }
+
+    @ParameterizedTest
+    @MethodSource
+    void testJsonStyle(JsonStyle style) throws IOException {
+        final var value = Map.of(
+            "a", true,
+            "b", 123,
+            "c", "abc",
+            "d", List.of(1, 2, 3),
+            "e", Map.of(
+                "x", 1,
+                "y", 2,
+                "z", List.of(1, 2, 3)
+            ),
+            "f", List.of(),
+            "g", Map.of()
+        );
+        // TODO #test: Write proper test with assertions
+        final var stringWriter = new StringWriter();
+        try (
+            stringWriter;
+            var valueWriter = new JsonValueWriter(stringWriter, style)
+        ) {
+            StandardObjectSerializer.INSTANCE.serializeValue(value, valueWriter);
+        }
+        log("JSON:\n" + stringWriter);
+    }
+
+    static Iterable<JsonStyle> testJsonStyle() {
+        return List.of(
+            JsonStyle.MINIFIED,
+            JsonStyle.PRETTY,
+            JsonStyle.builder()
+                .spaceAfterComma(true)
+                .spaceAfterColon(true)
+                .build(),
+            JsonStyle.builder()
+                .indentStyle(IndentStyle.SPACE)
+                .indentSize(0)
+                .spaceAfterComma(true)
+                .spaceAfterColon(true)
+                .build()
+        );
     }
 }
