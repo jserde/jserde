@@ -33,4 +33,23 @@ testing {
             implementation(project(":jserde-test"))
         }
     }
+    suites {
+        val test by getting(JvmTestSuite::class)
+        // JSONTestSuite
+        // https://github.com/nst/JSONTestSuite
+        val jsonTestSuite by registering(JvmTestSuite::class) {
+            dependencies {
+                implementation(project())
+            }
+            targets.all {
+                testTask {
+                    // Don't bother running this test suite if the unit tests fail
+                    dependsOn(test)
+                }
+            }
+        }
+        tasks.check {
+            dependsOn(jsonTestSuite)
+        }
+    }
 }

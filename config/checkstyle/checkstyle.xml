@@ -34,7 +34,7 @@
     </module>
     <!-- Suppress some checks for tests and benchmarks -->
     <module name="SuppressionSingleFilter">
-        <property name="files" value="[\\/]src[\\/]([a-z]*[tT]est|jmh)[\\/]"/>
+        <property name="files" value="[\\/]src[\\/]([a-zA-Z]*[tT]est[a-zA-Z]*|jmh)[\\/]"/>
         <property name="checks" value="(AvoidEscapedUnicodeCharacters|AnnotationUseStyle|Javadoc|MethodName|VisibilityModifier)"/>
     </module>
     <!-- Suppressions file -->
