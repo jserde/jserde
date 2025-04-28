@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
+import java.util.Set;
 import java.util.stream.Stream;
 import jserde.core.de.DeserializationException;
 import jserde.core.de.ValueDiscarder;
@@ -30,6 +31,8 @@ import jserde.test.AbstractTests;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.extension.ExtensionContext;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import static org.junit.jupiter.params.provider.Arguments.arguments;
@@ -107,12 +110,22 @@ class JsonTestSuiteTests extends AbstractTests {
 
     @ParameterizedTest(name = "{0}")
     @MethodSource
+    // TODO #design: Decide if JSerde struct should allow duplicate fields
+    @DisabledIf(value = "isDuplicateKeyTest", disabledReason = "JSerde forbids duplicate fields")
     void testValidJson(String displayName, Resource resource) {
         assertDoesNotThrow(() -> parseJson(resource));
     }
 
     static Stream<Arguments> testValidJson() {
         return dataJsonFiles("y_");
+    }
+
+    static boolean isDuplicateKeyTest(ExtensionContext context) {
+        return Set.of(
+            "object duplicated key",
+            "object duplicated key and value"
+        )
+            .contains(context.getDisplayName());
     }
 
     @ParameterizedTest(name = "{0}")
