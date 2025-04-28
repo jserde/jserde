@@ -20,36 +20,28 @@ plugins {
 
 description = "JSerde website."
 
-val destDir = layout.buildDirectory.dir("website").get()
-
-val websiteBase by tasks.registering(Sync::class) {
-    // https://picocss.com/docs/version-picker
-    val picocssTheme = "azure"
-    from(layout.projectDirectory.dir("src/website"))
-    into(destDir)
-    expand(
-        "projectVersion" to project.version.toString(),
-        "picocssVersion" to "2.1.0",
-        // NOTE: "azure" being the default theme, the property must be the empty string in that case
-        "picocssTheme" to picocssTheme.takeIf { it != "azure" }?.let { ".$it" }.orEmpty(),
-    )
-}
+// Pico CSS theme
+// https://picocss.com/docs/version-picker
+val picocssTheme = "azure"
 
 val jserdeDocsProject = project(":jserde-docs")
 
-val copyDocs by tasks.registering(Sync::class) {
-    dependsOn(jserdeDocsProject.tasks["assemble"])
-    from(jserdeDocsProject.layout.buildDirectory.dir("docs"))
-    into(destDir.dir("docs"))
-    exclude("**/.asciidoctor")
-}
-
-val website by tasks.registering(DefaultTask::class) {
+val website by tasks.registering(Sync::class) {
     description = "Generates the JSerde website."
-    dependsOn(
-        websiteBase,
-        copyDocs,
-    )
+    dependsOn(jserdeDocsProject.tasks["assemble"])
+    from(layout.projectDirectory.dir("src/website")) {
+        expand(
+            "projectVersion" to project.version.toString(),
+            "picocssVersion" to "2.1.0",
+            // NOTE: "azure" being the default theme, the property must be the empty string in that case
+            "picocssTheme" to picocssTheme.takeIf { it != "azure" }?.let { ".$it" }.orEmpty(),
+        )
+    }
+    from(jserdeDocsProject.layout.buildDirectory.dir("docs")) {
+        into("docs")
+        exclude("**/.asciidoctor")
+    }
+    into(layout.buildDirectory.dir("website"))
 }
 
 tasks.assemble {
