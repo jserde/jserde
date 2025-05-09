@@ -28,12 +28,12 @@ plugins {
 }
 
 val javaVersion = JavaLanguageVersion.of(providers.gradleProperty("jserde.java.version").get())
-val checkstyleVersion = "10.23.0"
-val errorproneVersion = "2.36.0"
+val checkstyleVersion = "10.23.1"
+val errorproneVersion = "2.38.0"
 val jacocoVersion = "0.8.12"
 val junitVersion = "5.12.0"
 val jspecifyVersion = "1.0.0"
-val nullawayVersion = "0.12.4"
+val nullawayVersion = "0.12.7"
 
 dependencies {
     api("org.jspecify:jspecify:$jspecifyVersion")
