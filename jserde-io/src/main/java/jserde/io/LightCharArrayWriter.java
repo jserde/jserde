@@ -121,8 +121,8 @@ public final class LightCharArrayWriter extends AbstractWriter {
 
     @Override
     public LightCharArrayWriter append(CharSequence sequence, int start, int end) {
-        if (sequence instanceof String) {
-            write((String) sequence, start, end - start);
+        if (sequence instanceof final String string) {
+            write(string, start, end - start);
         } else {
             for (int i = start; i < end; ++i) {
                 append(sequence.charAt(i));
