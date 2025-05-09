@@ -29,6 +29,7 @@ testing {
     jvmTestSuites {
         dependencies {
             implementation(project(":jserde-test"))
+            implementation(project(":jserde-json-de"))
         }
     }
 }
