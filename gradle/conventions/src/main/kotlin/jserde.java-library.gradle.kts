@@ -25,6 +25,7 @@ plugins {
     id("checkstyle")
     id("jacoco")
     id("org.barfuin.gradle.jacocolog")
+    id("jserde.maven-publish")
 }
 
 val javaVersion = JavaLanguageVersion.of(providers.gradleProperty("jserde.java.version").get())
@@ -134,5 +135,13 @@ tasks.withType<Javadoc> {
         links?.add("https://docs.oracle.com/en/java/javase/${javaVersion.asInt()}/docs/api")
         links?.add("https://javadoc.io/doc/com.google.errorprone/error_prone_annotations/$errorproneVersion")
         links?.add("https://javadoc.io/doc/org.jspecify/jspecify/$jspecifyVersion")
+    }
+}
+
+publishing {
+    publications {
+        val main by registering(MavenPublication::class) {
+            from(components["java"])
+        }
     }
 }
