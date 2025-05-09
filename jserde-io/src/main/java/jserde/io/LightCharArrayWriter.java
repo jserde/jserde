@@ -18,6 +18,7 @@ package jserde.io;
 
 import java.io.CharArrayWriter;
 import java.io.Writer;
+import java.util.Arrays;
 
 /**
  * {@link Writer} on a growable {@code char} array.
@@ -144,6 +145,10 @@ public final class LightCharArrayWriter extends AbstractWriter {
 
     public void reset() {
         index = 0;
+    }
+
+    public char[] toCharArray() {
+        return Arrays.copyOf(buffer, index);
     }
 
     @Override
