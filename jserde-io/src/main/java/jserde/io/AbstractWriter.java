@@ -49,10 +49,12 @@ public abstract class AbstractWriter extends Writer {
 
     @Override
     public void write(String string, int offset, int length) throws IOException {
-        append(string, offset, offset + length);
+        for (int i = 0; i < length; ++i) {
+            write(string.charAt(offset + i));
+        }
     }
 
-    // NOTE: Effectively final
+    // Effectively final
     @Override
     public Writer append(CharSequence string) throws IOException {
         return append(string, 0, string.length());
