@@ -22,7 +22,17 @@ import java.io.Writer;
 /**
  * Abstract {@link Writer}.
  *
- * <p>This class is more convenient to extend than {@code Writer}.
+ * <p>This class is more convenient to extend than {@code Writer},
+ * and is potentially slightly more performant.
+ *
+ * <p>Improvements:
+ *
+ * <ul>
+ *     <li>The {@link #write(int)} method is abstract,
+ *     and the other {@code write} methods invoke it.
+ *     <li>The {@link #flush()} and {@link #close()} methods are implemented and do nothing.
+ *     <li>No synchronization, which means this class is not thread-safe.
+ * </ul>
  *
  * @author Laurent Pireyn
  */

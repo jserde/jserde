@@ -24,7 +24,17 @@ import java.nio.CharBuffer;
 /**
  * Abstract {@link Reader}.
  *
- * <p>This class is more convenient to extend than {@code Reader}.
+ * <p>This class is more convenient to extend than {@code Reader},
+ * and is potentially slightly more performant.
+ *
+ * <p>Improvements:
+ *
+ * <ul>
+ *     <li>The {@link #read()} method is abstract,
+ *     and the other {@code read}, {@code skip} and {@code transferTo} methods invoke it.
+ *     <li>The {@link #close()} method is implemented and does nothing.
+ *     <li>No synchronization, which means this class is not thread-safe.
+ * </ul>
  *
  * @author Laurent Pireyn
  */

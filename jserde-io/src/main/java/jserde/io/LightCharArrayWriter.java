@@ -24,6 +24,13 @@ import java.io.Writer;
  *
  * <p>This class is a lighter and faster alternative to {@link CharArrayWriter}.
  *
+ * <p>Improvements:
+ *
+ * <ul>
+ *     <li>The arguments are not validated.
+ *     <li>No synchronization, which means this class is not thread-safe.
+ * </ul>
+ *
  * @author Laurent Pireyn
  */
 public final class LightCharArrayWriter extends AbstractWriter {
