@@ -14,17 +14,9 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
-
 /**
- * Core JSerde components.
+ * JSerde service interfaces.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.core {
-    requires transitive org.jspecify;
-    requires static com.google.errorprone.annotations;
-    exports jserde.core;
-    exports jserde.core.service;
-}
+package jserde.core.service;
