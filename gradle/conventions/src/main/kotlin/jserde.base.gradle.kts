@@ -21,6 +21,43 @@ plugins {
 group = "jserde"
 version = providers.gradleProperty("jserde.version").get()
 
+val configurations by tasks.registering(DefaultTask::class) {
+    description = "Displays the configurations of the project."
+    group = HelpTasksPlugin.HELP_GROUP
+    doLast {
+        project.configurations.forEach { configuration ->
+            println("Configuration: ${configuration.name}")
+            if (!(configuration.description.isNullOrBlank())) {
+                println("  Description: ${configuration.description}")
+            }
+            println("  Can be consumed: ${configuration.isCanBeConsumed}")
+            println("  Can be resolved: ${configuration.isCanBeResolved}")
+            println("  Can be declared: ${configuration.isCanBeDeclared}")
+            println("  Transitive: ${configuration.isTransitive}")
+            println("  Visible: ${configuration.isVisible}")
+            if (!(configuration.attributes.isEmpty())) {
+                println("  Attributes:")
+                configuration.attributes.keySet().forEach { attribute ->
+                    println("    - ${attribute.name} (${attribute.type.name}): ${configuration.attributes.getAttribute(attribute)}")
+                }
+            }
+            if (configuration.extendsFrom.isNotEmpty()) {
+                println("  Extends from:")
+                configuration.extendsFrom.forEach { extendedConfiguration ->
+                    println("    - ${extendedConfiguration.name}")
+                }
+            }
+            if (configuration.dependencies.isNotEmpty()) {
+                println("  Dependencies:")
+                configuration.dependencies.forEach { dependency ->
+                    println("    - $dependency")
+                }
+            }
+            println()
+        }
+    }
+}
+
 // Make archives reproducible
 tasks.withType<AbstractArchiveTask> {
     isReproducibleFileOrder = true
