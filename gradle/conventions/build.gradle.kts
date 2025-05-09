@@ -21,7 +21,7 @@ plugins {
 dependencies {
     api("io.morethan.jmhreport:io.morethan.jmhreport.gradle.plugin:0.9.6")
     api("me.champeau.jmh:jmh-gradle-plugin:0.7.3")
-    api("net.ltgt.gradle:gradle-errorprone-plugin:4.1.0")
+    api("net.ltgt.gradle:gradle-errorprone-plugin:4.2.0")
     api("net.ltgt.gradle:gradle-nullaway-plugin:2.2.0")
     api("org.asciidoctor.jvm.convert:org.asciidoctor.jvm.convert.gradle.plugin:4.0.4")
     api("org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0")
