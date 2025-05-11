@@ -18,17 +18,36 @@ package jserde.service.de;
 
 import jserde.json.JsonFormat;
 import jserde.test.AbstractTests;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import jserde.toml.TomlFormat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class DeserializationServiceLocatorTests extends AbstractTests {
-    @Test
-    void testWithJson() {
-        assertAll(() -> {
-            assertNotNull(DeserializationServiceLocator.findDataValueReaderServiceByFormat(JsonFormat.NAME));
-            assertNotNull(DeserializationServiceLocator.findDataValueReaderServiceByMediaType(JsonFormat.MEDIA_TYPE));
-            assertNotNull(DeserializationServiceLocator.findDataValueReaderServiceByFileExtension(JsonFormat.FILE_EXTENSION));
-        });
+    @ParameterizedTest
+    @ValueSource(strings = {
+        JsonFormat.NAME,
+        TomlFormat.NAME,
+    })
+    void testFindDataValueReaderServiceByFormat(String format) {
+        assertNotNull(DeserializationServiceLocator.findDataValueReaderServiceByFormat(format));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        JsonFormat.MEDIA_TYPE,
+        TomlFormat.MEDIA_TYPE,
+    })
+    void testFindDataValueReaderServiceByMediaType(String mediaType) {
+        assertNotNull(DeserializationServiceLocator.findDataValueReaderServiceByMediaType(mediaType));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        JsonFormat.FILE_EXTENSION,
+        TomlFormat.FILE_EXTENSION,
+    })
+    void testFindDataValueReaderServiceByFileExtension(String fileExtension) {
+        assertNotNull(DeserializationServiceLocator.findDataValueReaderServiceByFileExtension(fileExtension));
     }
 }
