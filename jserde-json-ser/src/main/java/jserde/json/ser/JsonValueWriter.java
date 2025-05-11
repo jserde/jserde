@@ -54,18 +54,12 @@ public final class JsonValueWriter implements DataValueWriter {
         // TODO: Consider using java.util.HexFormat
         private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
-        private boolean closed;
-
         void reopen() throws IOException {
-            closed = false;
             writer.write('"');
         }
 
         @Override
         public void write(int c) throws IOException {
-            if (closed) {
-                throw new IOException("Writer closed");
-            }
             switch (c) {
                 case '"', '\\' -> {
                     writer.write('\\');
@@ -111,14 +105,7 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         public void close() throws IOException {
-            // TODO: Since we know this writer will be closed exactly once, we don't need the `closed` flag
-            if (!closed) {
-                try {
-                    writer.write('"');
-                } finally {
-                    closed = true;
-                }
-            }
+            writer.write('"');
         }
     }
 
