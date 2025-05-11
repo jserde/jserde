@@ -125,7 +125,7 @@ public final class JsonValueWriter implements DataValueWriter {
         }
     }
 
-    private abstract sealed class JsonContainerWriter implements Closeable permits JsonSequenceWriter, JsonStructWriter {
+    private abstract sealed class JsonContainerWriter implements Closeable permits JsonArrayWriter, JsonObjectWriter {
         private boolean closed;
 
         @MustBeClosed
@@ -149,11 +149,11 @@ public final class JsonValueWriter implements DataValueWriter {
         abstract void writeContainerEnd() throws IOException;
     }
 
-    private final class JsonSequenceWriter extends JsonContainerWriter implements DataSequenceWriter {
+    private final class JsonArrayWriter extends JsonContainerWriter implements DataSequenceWriter {
         private int elementCount;
 
         @MustBeClosed
-        JsonSequenceWriter() throws IOException {}
+        JsonArrayWriter() throws IOException {}
 
         @Override
         void writeContainerBegin() throws IOException {
@@ -180,11 +180,11 @@ public final class JsonValueWriter implements DataValueWriter {
         }
     }
 
-    private final class JsonStructWriter extends JsonContainerWriter implements DataStructWriter {
+    private final class JsonObjectWriter extends JsonContainerWriter implements DataStructWriter {
         private int fieldCount;
 
         @MustBeClosed
-        JsonStructWriter() throws IOException {}
+        JsonObjectWriter() throws IOException {}
 
         @Override
         void writeContainerBegin() throws IOException {
@@ -341,14 +341,14 @@ public final class JsonValueWriter implements DataValueWriter {
 
     @Override
     public void serializeChar(char value) throws IOException {
-        try (var writer = openStringWriter()) {
+        try (var writer = openJsonStringWriter()) {
             writer.write(value);
         }
     }
 
     @Override
     public void serializeString(String value) throws IOException {
-        try (var writer = openStringWriter()) {
+        try (var writer = openJsonStringWriter()) {
             writer.write(value);
         }
     }
@@ -357,7 +357,7 @@ public final class JsonValueWriter implements DataValueWriter {
     public void serializeString(Reader reader, int lengthHint) throws IOException {
         try (
             reader;
-            var writer = openStringWriter()
+            var writer = openJsonStringWriter()
         ) {
             reader.transferTo(writer);
         }
@@ -372,7 +372,7 @@ public final class JsonValueWriter implements DataValueWriter {
     @Override
     @MustBeClosed
     public DataSequenceWriter serializeSequence(int size) throws IOException {
-        return openSequenceWriter();
+        return openJsonArrayWriter();
     }
 
     @Override
@@ -380,13 +380,13 @@ public final class JsonValueWriter implements DataValueWriter {
     // TODO: Don't suppress MustBeClosedChecker when it supports this flow
     @SuppressWarnings("MustBeClosedChecker")
     public DataMapWriter serializeMap(int size) throws IOException {
-        return openStructWriter().asMapWriter();
+        return openJsonObjectWriter().asMapWriter();
     }
 
     @Override
     @MustBeClosed
     public DataStructWriter serializeStruct(int fieldCount) throws IOException {
-        return openStructWriter();
+        return openJsonObjectWriter();
     }
 
     @Override
@@ -397,7 +397,7 @@ public final class JsonValueWriter implements DataValueWriter {
     // Child writers-related methods
 
     @MustBeClosed
-    private JsonStringWriter openStringWriter() throws IOException {
+    private JsonStringWriter openJsonStringWriter() throws IOException {
         stringWriter.reopen();
         return stringWriter;
     }
@@ -415,15 +415,15 @@ public final class JsonValueWriter implements DataValueWriter {
     }
 
     @MustBeClosed
-    private JsonSequenceWriter openSequenceWriter() throws IOException {
+    private JsonArrayWriter openJsonArrayWriter() throws IOException {
         beforeOpenContainerWriter();
-        return new JsonSequenceWriter();
+        return new JsonArrayWriter();
     }
 
     @MustBeClosed
-    private JsonStructWriter openStructWriter() throws IOException {
+    private JsonObjectWriter openJsonObjectWriter() throws IOException {
         beforeOpenContainerWriter();
-        return new JsonStructWriter();
+        return new JsonObjectWriter();
     }
 
     // Style-related methods
