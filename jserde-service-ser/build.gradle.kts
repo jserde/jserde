@@ -30,6 +30,7 @@ testing {
         dependencies {
             implementation(project(":jserde-test"))
             implementation(project(":jserde-json-ser"))
+            implementation(project(":jserde-toml-ser"))
         }
     }
 }

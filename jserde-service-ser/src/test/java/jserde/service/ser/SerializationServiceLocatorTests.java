@@ -18,17 +18,36 @@ package jserde.service.ser;
 
 import jserde.json.JsonFormat;
 import jserde.test.AbstractTests;
-import static org.junit.jupiter.api.Assertions.assertAll;
+import jserde.toml.TomlFormat;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class SerializationServiceLocatorTests extends AbstractTests {
-    @Test
-    void testWithJson() {
-        assertAll(() -> {
-            assertNotNull(SerializationServiceLocator.findDataValueWriterServiceByFormat(JsonFormat.NAME));
-            assertNotNull(SerializationServiceLocator.findDataValueWriterServiceByMediaType(JsonFormat.MEDIA_TYPE));
-            assertNotNull(SerializationServiceLocator.findDataValueWriterServiceByFileExtension(JsonFormat.FILE_EXTENSION));
-        });
+    @ParameterizedTest
+    @ValueSource(strings = {
+        JsonFormat.NAME,
+        TomlFormat.NAME,
+    })
+    void testFindDataValueWriterServiceByFormat(String format) {
+        assertNotNull(SerializationServiceLocator.findDataValueWriterServiceByFormat(format));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        JsonFormat.MEDIA_TYPE,
+        TomlFormat.MEDIA_TYPE,
+    })
+    void testFindDataValueWriterServiceByMediaType(String mediaType) {
+        assertNotNull(SerializationServiceLocator.findDataValueWriterServiceByMediaType(mediaType));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {
+        JsonFormat.FILE_EXTENSION,
+        TomlFormat.FILE_EXTENSION,
+    })
+    void testFindDataValueWriterServiceByFileExtension(String fileExtension) {
+        assertNotNull(SerializationServiceLocator.findDataValueWriterServiceByFileExtension(fileExtension));
     }
 }
