@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
-
 /**
- * JSerde serialization components for the TOML format.
+ * Serialization services for the TOML format.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.toml.ser {
-    requires transitive jserde.core.ser;
-    requires transitive jserde.toml;
-    requires jserde.io;
-    requires static com.google.errorprone.annotations;
-    exports jserde.toml.ser;
-    provides jserde.core.ser.service.DataValueWriterService with jserde.toml.ser.service.TomlValueWriterService;
-}
+package jserde.toml.ser.service;
