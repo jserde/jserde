@@ -18,6 +18,7 @@ package jserde.json.ser;
 
 import com.google.errorprone.annotations.Immutable;
 import jserde.core.ser.text.Indentation;
+import jserde.core.ser.text.Newline;
 
 /**
  * JSON style.
@@ -33,6 +34,7 @@ public final class JsonStyle {
      */
     public static final class Builder {
         boolean multiLine;
+        Newline newline = Newline.lf();
         Indentation indentation = Indentation.none();
         boolean spaceAfterComma;
         boolean spaceAfterColon;
@@ -42,6 +44,12 @@ public final class JsonStyle {
 
         public Builder multiLine(boolean multiLine) {
             this.multiLine = multiLine;
+            return this;
+        }
+
+        public Builder newline(Newline newline) {
+            this.newline = newline;
+            multiLine = true;
             return this;
         }
 
@@ -81,7 +89,7 @@ public final class JsonStyle {
     /**
      * JSON style that results in "pretty" JSON.
      *
-     * <p>The resulting JSON text has multiple lines indented with 2 spaces,
+     * <p>The resulting JSON text has multiple lines ending with the LF character and indented with 2 spaces,
      * has a space after commas and colons,
      * and collapses empty containers.
      */
@@ -102,6 +110,7 @@ public final class JsonStyle {
     }
 
     private final boolean multiLine;
+    private final Newline newline;
     private final Indentation indentation;
     private final boolean spaceAfterComma;
     private final boolean spaceAfterColon;
@@ -109,6 +118,7 @@ public final class JsonStyle {
 
     private JsonStyle(Builder builder) {
         multiLine = builder.multiLine;
+        newline = builder.newline;
         indentation = builder.indentation;
         spaceAfterComma = builder.spaceAfterComma;
         spaceAfterColon = builder.spaceAfterColon;
@@ -117,6 +127,10 @@ public final class JsonStyle {
 
     public boolean isMultiLine() {
         return multiLine;
+    }
+
+    public Newline getNewline() {
+        return newline;
     }
 
     public Indentation getIndentation() {

@@ -430,7 +430,7 @@ public final class JsonValueWriter implements DataValueWriter {
 
     private void beforeContainerChild() throws IOException {
         if (style.isMultiLine()) {
-            writer.write('\n');
+            style.getNewline().write(writer);
             style.getIndentation().writeIndent(writer, nestingDepth);
         }
     }
