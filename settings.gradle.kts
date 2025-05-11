@@ -49,5 +49,6 @@ include(
     ":jserde-test",
     ":jserde-toml",
     ":jserde-toml-de",
+    ":jserde-toml-ser",
     ":jserde-website",
 )
