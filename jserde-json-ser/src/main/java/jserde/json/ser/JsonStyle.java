@@ -36,6 +36,7 @@ public final class JsonStyle {
         Indentation indentation = Indentation.none();
         boolean spaceAfterComma;
         boolean spaceAfterColon;
+        boolean collapseEmptyContainers;
 
         Builder() {}
 
@@ -60,6 +61,11 @@ public final class JsonStyle {
             return this;
         }
 
+        public Builder collapseEmptyContainers(boolean collapseEmptyContainers) {
+            this.collapseEmptyContainers = collapseEmptyContainers;
+            return this;
+        }
+
         public JsonStyle build() {
             return new JsonStyle(this);
         }
@@ -75,12 +81,15 @@ public final class JsonStyle {
     /**
      * JSON style that results in "pretty" JSON.
      *
-     * <p>The resulting JSON text has multiple lines indented with 2 spaces and has a space after commas and colons.
+     * <p>The resulting JSON text has multiple lines indented with 2 spaces,
+     * has a space after commas and colons,
+     * and collapses empty containers.
      */
     public static final JsonStyle PRETTY = builder()
         .indentation(Indentation.spaces(2))
         .spaceAfterComma(true)
         .spaceAfterColon(true)
+        .collapseEmptyContainers(true)
         .build();
 
     /**
@@ -96,12 +105,14 @@ public final class JsonStyle {
     private final Indentation indentation;
     private final boolean spaceAfterComma;
     private final boolean spaceAfterColon;
+    private final boolean collapseEmptyContainers;
 
     private JsonStyle(Builder builder) {
         multiLine = builder.multiLine;
         indentation = builder.indentation;
         spaceAfterComma = builder.spaceAfterComma;
         spaceAfterColon = builder.spaceAfterColon;
+        collapseEmptyContainers = builder.collapseEmptyContainers;
     }
 
     public boolean isMultiLine() {
@@ -118,5 +129,9 @@ public final class JsonStyle {
 
     public boolean isSpaceAfterColon() {
         return spaceAfterColon;
+    }
+
+    public boolean isCollapseEmptyContainers() {
+        return collapseEmptyContainers;
     }
 }

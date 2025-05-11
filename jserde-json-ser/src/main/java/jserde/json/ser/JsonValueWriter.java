@@ -141,7 +141,6 @@ public final class JsonValueWriter implements DataValueWriter {
             if (!closed) {
                 closed = true;
                 afterCloseContainerWriter();
-                beforeContainerChild();
                 writeContainerEnd();
             }
         }
@@ -151,7 +150,7 @@ public final class JsonValueWriter implements DataValueWriter {
     }
 
     private final class JsonSequenceWriter extends JsonContainerWriter implements DataSequenceWriter {
-        private int index;
+        private int elementCount;
 
         @MustBeClosed
         JsonSequenceWriter() throws IOException {}
@@ -163,23 +162,26 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         public <T extends @Nullable Object> void serializeElement(T value, ValueSerializer<? super T> serializer) throws IOException {
-            if (index > 0) {
+            if (elementCount > 0) {
                 writer.write(COMMA);
                 afterComma();
             }
             beforeContainerChild();
             serializer.serializeValue(value, JsonValueWriter.this);
-            ++index;
+            ++elementCount;
         }
 
         @Override
         void writeContainerEnd() throws IOException {
+            if (!style.isCollapseEmptyContainers() || elementCount > 0) {
+                beforeContainerChild();
+            }
             writer.write(RSB);
         }
     }
 
     private final class JsonStructWriter extends JsonContainerWriter implements DataStructWriter {
-        private int index;
+        private int fieldCount;
 
         @MustBeClosed
         JsonStructWriter() throws IOException {}
@@ -191,7 +193,7 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         public <T extends @Nullable Object> void serializeField(String name, T value, ValueSerializer<? super T> serializer) throws IOException {
-            if (index > 0) {
+            if (fieldCount > 0) {
                 writer.write(COMMA);
                 afterComma();
             }
@@ -200,11 +202,14 @@ public final class JsonValueWriter implements DataValueWriter {
             writer.write(COLON);
             afterColon();
             serializer.serializeValue(value, JsonValueWriter.this);
-            ++index;
+            ++fieldCount;
         }
 
         @Override
         void writeContainerEnd() throws IOException {
+            if (!style.isCollapseEmptyContainers() || fieldCount > 0) {
+                beforeContainerChild();
+            }
             writer.write(RCB);
         }
     }
