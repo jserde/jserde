@@ -37,6 +37,22 @@ import jserde.core.ser.SerializationException;
 import jserde.core.ser.ValueSerializer;
 import jserde.io.AbstractWriter;
 import jserde.json.JsonFormat;
+import static jserde.json.JsonSyntax.BACKSLASH;
+import static jserde.json.JsonSyntax.BS;
+import static jserde.json.JsonSyntax.COLON;
+import static jserde.json.JsonSyntax.COMMA;
+import static jserde.json.JsonSyntax.CR;
+import static jserde.json.JsonSyntax.FALSE;
+import static jserde.json.JsonSyntax.FF;
+import static jserde.json.JsonSyntax.HT;
+import static jserde.json.JsonSyntax.LCB;
+import static jserde.json.JsonSyntax.LF;
+import static jserde.json.JsonSyntax.LSB;
+import static jserde.json.JsonSyntax.NULL;
+import static jserde.json.JsonSyntax.QUOTATION_MARK;
+import static jserde.json.JsonSyntax.RCB;
+import static jserde.json.JsonSyntax.RSB;
+import static jserde.json.JsonSyntax.TRUE;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -55,41 +71,41 @@ public final class JsonValueWriter implements DataValueWriter {
         private static final char[] HEX_DIGITS = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'a', 'b', 'c', 'd', 'e', 'f'};
 
         void reopen() throws IOException {
-            writer.write('"');
+            writer.write(QUOTATION_MARK);
         }
 
         @Override
         public void write(int c) throws IOException {
             switch (c) {
-                case '"', '\\' -> {
-                    writer.write('\\');
+                case QUOTATION_MARK, BACKSLASH -> {
+                    writer.write(BACKSLASH);
                     writer.write(c);
                 }
-                case '\n' -> {
-                    writer.write('\\');
+                case LF -> {
+                    writer.write(BACKSLASH);
                     writer.write('n');
                 }
-                case '\r' -> {
-                    writer.write('\\');
+                case CR -> {
+                    writer.write(BACKSLASH);
                     writer.write('r');
                 }
-                case '\t' -> {
-                    writer.write('\\');
+                case HT -> {
+                    writer.write(BACKSLASH);
                     writer.write('t');
                 }
-                case '\f' -> {
-                    writer.write('\\');
+                case FF -> {
+                    writer.write(BACKSLASH);
                     writer.write('f');
                 }
-                case '\b' -> {
-                    writer.write('\\');
+                case BS -> {
+                    writer.write(BACKSLASH);
                     writer.write('b');
                 }
                 // NOTE: Slash ('/') is not escaped
                 default -> {
                     if (c < ' ') {
                         // Control character
-                        writer.write('\\');
+                        writer.write(BACKSLASH);
                         writer.write('u');
                         writer.write(HEX_DIGITS[(c & 0xf000) >> 12]);
                         writer.write(HEX_DIGITS[(c & 0x0f00) >> 8]);
@@ -105,7 +121,7 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         public void close() throws IOException {
-            writer.write('"');
+            writer.write(QUOTATION_MARK);
         }
     }
 
@@ -142,13 +158,13 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         void writeContainerBegin() throws IOException {
-            writer.write('[');
+            writer.write(LSB);
         }
 
         @Override
         public <T extends @Nullable Object> void serializeElement(T value, ValueSerializer<? super T> serializer) throws IOException {
             if (index > 0) {
-                writer.write(',');
+                writer.write(COMMA);
                 afterComma();
             }
             beforeContainerChild();
@@ -158,7 +174,7 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         void writeContainerEnd() throws IOException {
-            writer.write(']');
+            writer.write(RSB);
         }
     }
 
@@ -170,18 +186,18 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         void writeContainerBegin() throws IOException {
-            writer.write('{');
+            writer.write(LCB);
         }
 
         @Override
         public <T extends @Nullable Object> void serializeField(String name, T value, ValueSerializer<? super T> serializer) throws IOException {
             if (index > 0) {
-                writer.write(',');
+                writer.write(COMMA);
                 afterComma();
             }
             beforeContainerChild();
             serializeString(name);
-            writer.write(':');
+            writer.write(COLON);
             afterColon();
             serializer.serializeValue(value, JsonValueWriter.this);
             ++index;
@@ -189,7 +205,7 @@ public final class JsonValueWriter implements DataValueWriter {
 
         @Override
         void writeContainerEnd() throws IOException {
-            writer.write('}');
+            writer.write(RCB);
         }
     }
 
@@ -284,12 +300,12 @@ public final class JsonValueWriter implements DataValueWriter {
 
     @Override
     public void serializeNull() throws IOException {
-        writer.write("null");
+        writer.write(NULL);
     }
 
     @Override
     public void serializeBoolean(boolean value) throws IOException {
-        writer.write(value ? "true" : "false");
+        writer.write(value ? TRUE : FALSE);
     }
 
     @Override

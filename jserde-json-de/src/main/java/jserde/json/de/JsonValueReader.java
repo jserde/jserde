@@ -41,6 +41,20 @@ import jserde.io.AbstractReader;
 import jserde.io.LightCharArrayReader;
 import jserde.io.LightCharArrayWriter;
 import jserde.json.JsonFormat;
+import static jserde.json.JsonSyntax.BACKSLASH;
+import static jserde.json.JsonSyntax.BS;
+import static jserde.json.JsonSyntax.COLON;
+import static jserde.json.JsonSyntax.COMMA;
+import static jserde.json.JsonSyntax.CR;
+import static jserde.json.JsonSyntax.FF;
+import static jserde.json.JsonSyntax.HT;
+import static jserde.json.JsonSyntax.LCB;
+import static jserde.json.JsonSyntax.LF;
+import static jserde.json.JsonSyntax.LSB;
+import static jserde.json.JsonSyntax.QUOTATION_MARK;
+import static jserde.json.JsonSyntax.RCB;
+import static jserde.json.JsonSyntax.RSB;
+import static jserde.json.JsonSyntax.SP;
 import org.jspecify.annotations.Nullable;
 
 /**
@@ -49,23 +63,6 @@ import org.jspecify.annotations.Nullable;
  * @author Laurent Pireyn
  */
 public final class JsonValueReader implements DataValueReader {
-    private static final char QUOTATION_MARK = '"';
-    private static final char BACKSLASH = '\\';
-    private static final char LSB = '[';
-    private static final char RSB = ']';
-    private static final char LCB = '{';
-    private static final char RCB = '}';
-    private static final char COMMA = ',';
-    private static final char COLON = ':';
-
-    // WS characters (sorted)
-    private static final char BS = '\b';
-    private static final char HT = '\t';
-    private static final char FF = '\f';
-    private static final char LF = '\n';
-    private static final char CR = '\r';
-    private static final char SP = ' ';
-
     // TODO #improvement: Make max nesting depth configurable
     private static final int MAX_NESTING_DEPTH = 100;
 
