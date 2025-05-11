@@ -14,22 +14,9 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
-
 /**
- * Core JSerde serialization components.
+ * {@link jserde.core.ser.DataValueWriter} factories.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.core.ser {
-    requires transitive jserde.core;
-    requires transitive org.jspecify;
-    requires jserde.io;
-    requires static com.google.errorprone.annotations;
-    exports jserde.core.ser;
-    exports jserde.core.ser.factory;
-    exports jserde.core.ser.holder;
-    exports jserde.core.ser.resolver;
-    exports jserde.core.ser.standard;
-}
+package jserde.core.ser.factory;
