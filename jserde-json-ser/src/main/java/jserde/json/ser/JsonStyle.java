@@ -17,6 +17,7 @@
 package jserde.json.ser;
 
 import com.google.errorprone.annotations.Immutable;
+import jserde.core.ser.text.Indentation;
 
 /**
  * JSON style.
@@ -31,23 +32,21 @@ public final class JsonStyle {
      * @see JsonStyle#builder()
      */
     public static final class Builder {
-        IndentStyle indentStyle = IndentStyle.NONE;
-        int indentSize = 2;
+        boolean multiLine;
+        Indentation indentation = Indentation.none();
         boolean spaceAfterComma;
         boolean spaceAfterColon;
 
         Builder() {}
 
-        public Builder indentStyle(IndentStyle indentStyle) {
-            this.indentStyle = indentStyle;
+        public Builder multiLine(boolean multiLine) {
+            this.multiLine = multiLine;
             return this;
         }
 
-        public Builder indentSize(int indentSize) {
-            if (indentSize < 0) {
-                throw new IllegalArgumentException("Negative indent size: " + indentSize);
-            }
-            this.indentSize = indentSize;
+        public Builder indentation(Indentation indentation) {
+            this.indentation = indentation;
+            multiLine = true;
             return this;
         }
 
@@ -76,10 +75,10 @@ public final class JsonStyle {
     /**
      * JSON style that results in "pretty" JSON.
      *
-     * <p>The resulting JSON text is indented with 2 spaces and has a space after commas and colons.
+     * <p>The resulting JSON text has multiple lines indented with 2 spaces and has a space after commas and colons.
      */
     public static final JsonStyle PRETTY = builder()
-        .indentStyle(IndentStyle.SPACE)
+        .indentation(Indentation.spaces(2))
         .spaceAfterComma(true)
         .spaceAfterColon(true)
         .build();
@@ -93,24 +92,24 @@ public final class JsonStyle {
         return new Builder();
     }
 
-    private final IndentStyle indentStyle;
-    private final int indentSize;
+    private final boolean multiLine;
+    private final Indentation indentation;
     private final boolean spaceAfterComma;
     private final boolean spaceAfterColon;
 
     private JsonStyle(Builder builder) {
-        indentStyle = builder.indentStyle;
-        indentSize = builder.indentSize;
+        multiLine = builder.multiLine;
+        indentation = builder.indentation;
         spaceAfterComma = builder.spaceAfterComma;
         spaceAfterColon = builder.spaceAfterColon;
     }
 
-    public IndentStyle getIndentStyle() {
-        return indentStyle;
+    public boolean isMultiLine() {
+        return multiLine;
     }
 
-    public int getIndentSize() {
-        return indentSize;
+    public Indentation getIndentation() {
+        return indentation;
     }
 
     public boolean isSpaceAfterComma() {

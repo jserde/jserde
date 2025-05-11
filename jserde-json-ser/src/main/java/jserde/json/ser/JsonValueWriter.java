@@ -236,11 +236,6 @@ public final class JsonValueWriter implements DataValueWriter {
     private int nestingDepth;
 
     /**
-     * String used for each indent level.
-     */
-    private final String indentString;
-
-    /**
      * Creates a new {@code JsonValueWriter} on the given {@link Writer},
      * using {@link #DEFAULT_STYLE}.
      *
@@ -262,15 +257,6 @@ public final class JsonValueWriter implements DataValueWriter {
     public JsonValueWriter(Writer writer, JsonStyle style) {
         this.writer = writer;
         this.style = style;
-        // Prepare indent string based on style
-        final var indentStyle = style.getIndentStyle();
-        final var indentSize = style.getIndentSize();
-        if (indentStyle != IndentStyle.NONE && indentSize > 0) {
-            final var ch = indentStyle == IndentStyle.SPACE ? ' ' : '\t';
-            indentString = String.valueOf(ch).repeat(indentSize);
-        } else {
-            indentString = "";
-        }
     }
 
     /**
@@ -438,12 +424,9 @@ public final class JsonValueWriter implements DataValueWriter {
     // Style-related methods
 
     private void beforeContainerChild() throws IOException {
-        final var indentStyle = style.getIndentStyle();
-        if (indentStyle != IndentStyle.NONE) {
+        if (style.isMultiLine()) {
             writer.write('\n');
-            for (int i = 0; i < nestingDepth; ++i) {
-                writer.write(indentString);
-            }
+            style.getIndentation().writeIndent(writer, nestingDepth);
         }
     }
 

@@ -36,6 +36,7 @@ import jserde.core.ser.standard.StandardNullSerializer;
 import jserde.core.ser.standard.StandardObjectSerializer;
 import jserde.core.ser.standard.StandardShortSerializer;
 import jserde.core.ser.standard.StandardStringSerializer;
+import jserde.core.ser.text.Indentation;
 import jserde.test.AbstractTests;
 import org.jspecify.annotations.Nullable;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -240,8 +241,7 @@ class JsonValueWriterTests extends AbstractTests {
                 .spaceAfterColon(true)
                 .build(),
             JsonStyle.builder()
-                .indentStyle(IndentStyle.SPACE)
-                .indentSize(0)
+                .indentation(Indentation.none())
                 .spaceAfterComma(true)
                 .spaceAfterColon(true)
                 .build()
