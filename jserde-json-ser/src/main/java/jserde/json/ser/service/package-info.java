@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
-
 /**
- * JSerde serialization components for the JSON format.
+ * Serialization services for the JSON format.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.json.ser {
-    requires transitive jserde.core.ser;
-    requires transitive jserde.json;
-    requires jserde.io;
-    requires static com.google.errorprone.annotations;
-    exports jserde.json.ser;
-    provides jserde.core.ser.service.DataValueWriterService with jserde.json.ser.service.JsonValueWriterService;
-}
+package jserde.json.ser.service;
