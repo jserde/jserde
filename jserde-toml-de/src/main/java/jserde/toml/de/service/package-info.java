@@ -14,19 +14,9 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
-
 /**
- * JSerde deserialization components for the TOML format.
+ * Deserialization services for the TOML format.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.toml.de {
-    requires transitive jserde.core.de;
-    requires transitive jserde.toml;
-    requires jserde.io;
-    requires static com.google.errorprone.annotations;
-    exports jserde.toml.de;
-    provides jserde.core.de.service.DataValueReaderService with jserde.toml.de.service.TomlValueReaderService;
-}
+package jserde.toml.de.service;
