@@ -111,7 +111,7 @@ public final class StandardObjectDeserializer extends StandardValueDeserializer<
     }
 
     @Override
-    public byte[] visitByteArray(byte[] value) throws IOException {
+    public byte[] visitByteArray(byte[] value) {
         return StandardByteArrayDeserializer.INSTANCE.visitByteArray(value);
     }
 
