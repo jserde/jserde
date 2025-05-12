@@ -19,6 +19,7 @@ plugins {
 }
 
 dependencies {
+    api("com.github.spotbugs:com.github.spotbugs.gradle.plugin:6.1.11")
     api("io.morethan.jmhreport:io.morethan.jmhreport.gradle.plugin:0.9.6")
     api("me.champeau.jmh:jmh-gradle-plugin:0.7.3")
     api("net.ltgt.gradle:gradle-errorprone-plugin:4.2.0")

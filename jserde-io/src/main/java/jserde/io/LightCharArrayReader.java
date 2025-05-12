@@ -16,6 +16,7 @@
 
 package jserde.io;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.CharArrayReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -44,6 +45,7 @@ public final class LightCharArrayReader extends AbstractReader {
     private int index;
     private int mark;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public LightCharArrayReader(char[] array) {
         this.array = array;
         arrayLength = array.length;

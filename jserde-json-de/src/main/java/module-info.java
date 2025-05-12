@@ -26,6 +26,7 @@ module jserde.json.de {
     requires transitive jserde.core.de;
     requires transitive jserde.json;
     requires jserde.io;
+    requires static com.github.spotbugs.annotations;
     requires static com.google.errorprone.annotations;
     exports jserde.json.de;
     provides jserde.core.de.service.DataValueReaderService with jserde.json.de.service.JsonValueReaderService;

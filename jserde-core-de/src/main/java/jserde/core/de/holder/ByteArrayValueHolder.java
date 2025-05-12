@@ -16,6 +16,7 @@
 
 package jserde.core.de.holder;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import jserde.core.DataType;
 import jserde.core.de.DataValueVisitor;
@@ -29,6 +30,7 @@ import org.jspecify.annotations.Nullable;
 public final class ByteArrayValueHolder extends DataValueHolder {
     private final byte[] value;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public ByteArrayValueHolder(byte[] value) {
         this.value = value;
     }

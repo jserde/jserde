@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+import com.github.spotbugs.snom.Confidence
+import com.github.spotbugs.snom.Effort
+import com.github.spotbugs.snom.SpotBugsTask
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
 
@@ -22,6 +25,7 @@ plugins {
     id("java-library")
     id("net.ltgt.errorprone")
     id("net.ltgt.nullaway")
+    id("com.github.spotbugs")
     id("checkstyle")
     id("jacoco")
     id("org.barfuin.gradle.jacocolog")
@@ -35,10 +39,12 @@ val jacocoVersion = "0.8.12"
 val junitVersion = "5.12.0"
 val jspecifyVersion = "1.0.0"
 val nullawayVersion = "0.12.7"
+val spotbugsVersion = "4.9.3"
 
 dependencies {
     api("org.jspecify:jspecify:$jspecifyVersion")
     compileOnly("com.google.errorprone:error_prone_annotations:$errorproneVersion")
+    compileOnly("com.github.spotbugs:spotbugs-annotations:$spotbugsVersion")
     errorprone("com.google.errorprone:error_prone_core:$errorproneVersion")
     errorprone("com.uber.nullaway:nullaway:$nullawayVersion")
 }
@@ -69,6 +75,29 @@ tasks.withType<JavaCompile> {
             )
         }
     }
+}
+
+spotbugs {
+    toolVersion.set(spotbugsVersion)
+    excludeFilter.set(rootProject.layout.projectDirectory.file("config/spotbugs/spotbugs-exclude.xml"))
+}
+
+tasks.withType<SpotBugsTask> {
+    reports.create("xml") {
+        required.set(true)
+    }
+    reports.create("html") {
+        required.set(true)
+    }
+    reports.create("sarif") {
+        required.set(true)
+    }
+}
+
+val spotbugs by tasks.registering(DefaultTask::class) {
+    description = "Runs the SpotBugs tasks of project '${project.path}'."
+    group = JavaBasePlugin.VERIFICATION_GROUP
+    dependsOn(tasks.withType<SpotBugsTask>())
 }
 
 checkstyle {
@@ -134,6 +163,7 @@ tasks.withType<Javadoc> {
         linkSource()
         links?.add("https://docs.oracle.com/en/java/javase/${javaVersion.asInt()}/docs/api")
         links?.add("https://javadoc.io/doc/com.google.errorprone/error_prone_annotations/$errorproneVersion")
+        links?.add("https://javadoc.io/doc/com.github.spotbugs/spotbugs-annotations/$spotbugsVersion")
         links?.add("https://javadoc.io/doc/org.jspecify/jspecify/$jspecifyVersion")
     }
 }

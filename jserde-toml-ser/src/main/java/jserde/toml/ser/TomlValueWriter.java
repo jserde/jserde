@@ -17,6 +17,7 @@
 package jserde.toml.ser;
 
 import com.google.errorprone.annotations.MustBeClosed;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
@@ -44,6 +45,7 @@ public final class TomlValueWriter implements DataValueWriter {
      * @param writer the writer
      */
     // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public TomlValueWriter(Writer writer) {
         this.writer = writer;
     }

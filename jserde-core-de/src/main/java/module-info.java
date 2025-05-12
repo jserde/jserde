@@ -26,6 +26,7 @@ module jserde.core.de {
     requires transitive jserde.core;
     requires transitive org.jspecify;
     requires jserde.io;
+    requires static com.github.spotbugs.annotations;
     requires static com.google.errorprone.annotations;
     exports jserde.core.de;
     exports jserde.core.de.factory;

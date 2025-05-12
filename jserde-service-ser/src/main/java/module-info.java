@@ -26,6 +26,7 @@ module jserde.service.ser {
     requires transitive jserde.core;
     requires transitive jserde.core.ser;
     requires transitive org.jspecify;
+    requires static com.github.spotbugs.annotations;
     requires static com.google.errorprone.annotations;
     exports jserde.service.ser;
     uses jserde.core.ser.service.DataValueWriterService;

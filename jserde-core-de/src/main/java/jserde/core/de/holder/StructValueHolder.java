@@ -16,6 +16,7 @@
 
 package jserde.core.de.holder;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.util.Iterator;
 import java.util.Map;
@@ -84,6 +85,7 @@ public final class StructValueHolder extends DataValueHolder {
 
     private final Map<String, ? extends @Nullable Object> value;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public StructValueHolder(Map<String, ? extends @Nullable Object> value) {
         this.value = value;
     }

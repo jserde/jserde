@@ -16,6 +16,7 @@
 
 package jserde.core.de.holder;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Iterator;
@@ -63,6 +64,7 @@ public final class SequenceValueHolder extends DataValueHolder {
 
     private final Collection<? extends @Nullable Object> value;
 
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public SequenceValueHolder(Collection<? extends @Nullable Object> value) {
         this.value = value;
     }

@@ -16,6 +16,7 @@
 
 package jserde.core.ser.holder;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import jserde.core.DataType;
 import org.jspecify.annotations.Nullable;
@@ -29,6 +30,7 @@ public final class ByteArrayValueHolder extends DataValueHolder<byte[]> {
     private byte @Nullable [] value;
 
     @Override
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public void serializeByteArray(byte[] value) throws IOException {
         beforeSerializeValue();
         this.value = value;

@@ -24,6 +24,7 @@ import org.jspecify.annotations.NullMarked;
 @NullMarked
 module jserde.io {
     requires transitive org.jspecify;
+    requires static com.github.spotbugs.annotations;
     requires static com.google.errorprone.annotations;
     exports jserde.io;
 }

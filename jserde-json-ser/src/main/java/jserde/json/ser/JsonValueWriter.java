@@ -18,6 +18,7 @@ package jserde.json.ser;
 
 import com.google.errorprone.annotations.ForOverride;
 import com.google.errorprone.annotations.MustBeClosed;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.Closeable;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -129,6 +130,7 @@ public final class JsonValueWriter implements DataValueWriter {
         private boolean closed;
 
         @MustBeClosed
+        @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
         JsonContainerWriter() throws IOException {
             writeContainerBegin();
         }
@@ -259,6 +261,7 @@ public final class JsonValueWriter implements DataValueWriter {
      * @param style the style
      */
     // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
+    @SuppressFBWarnings("EI_EXPOSE_REP2")
     public JsonValueWriter(Writer writer, JsonStyle style) {
         this.writer = writer;
         this.style = style;

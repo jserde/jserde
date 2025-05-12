@@ -31,6 +31,7 @@ module jserde.json.model {
     requires transitive jserde.json.ser;
     requires transitive org.jspecify;
     requires jserde.io;
+    requires static com.github.spotbugs.annotations;
     requires static com.google.errorprone.annotations;
     exports jserde.json.model;
 }

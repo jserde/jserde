@@ -26,6 +26,7 @@ module jserde.toml.ser {
     requires transitive jserde.core.ser;
     requires transitive jserde.toml;
     requires jserde.io;
+    requires static com.github.spotbugs.annotations;
     requires static com.google.errorprone.annotations;
     exports jserde.toml.ser;
     provides jserde.core.ser.service.DataValueWriterService with jserde.toml.ser.service.TomlValueWriterService;
