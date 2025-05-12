@@ -116,6 +116,12 @@ tasks.withType<Checkstyle> {
     }
 }
 
+val checkstyle by tasks.registering(DefaultTask::class) {
+    description = "Runs the CheckStyle tasks of project '${project.path}'."
+    group = JavaBasePlugin.VERIFICATION_GROUP
+    dependsOn(tasks.withType<Checkstyle>())
+}
+
 testing {
     jvmTestSuites {
         dependencies {
