@@ -73,11 +73,11 @@ public final class JsonValueReader implements DataValueReader {
     public static final int DEFAULT_MAX_NESTING_DEPTH = 500;
 
     private static boolean isWs(int c) {
-        // TODO #optimization: Order these tests by descending probability
+        // NOTE #optimization: Tests ordered by descending probability
         return c == SP
             || c == LF
-            || c == CR
-            || c == HT;
+            || c == HT
+            || c == CR;
     }
 
     private static boolean isDigit(int c) {
@@ -521,14 +521,7 @@ public final class JsonValueReader implements DataValueReader {
 
     private JsonToken readToken() throws IOException {
         final var c = readNonWsChar();
-        // TODO #optimization: Order these tests by descending probability
-        // Boolean?
-        if (c == 't') {
-            return consumeTrueToken();
-        }
-        if (c == 'f') {
-            return consumeFalseToken();
-        }
+        // NOTE #optimization: Tests ordered by descending probability
         // String?
         if (c == QUOTATION_MARK) {
             return JsonToken.STRING_BEGIN;
@@ -538,13 +531,20 @@ public final class JsonValueReader implements DataValueReader {
             unreadChar(c);
             return JsonToken.NUMBER_BEGIN;
         }
+        // Object?
+        if (c == LCB) {
+            return JsonToken.OBJECT_BEGIN;
+        }
         // Array?
         if (c == LSB) {
             return JsonToken.ARRAY_BEGIN;
         }
-        // Object?
-        if (c == LCB) {
-            return JsonToken.OBJECT_BEGIN;
+        // Boolean?
+        if (c == 't') {
+            return consumeTrueToken();
+        }
+        if (c == 'f') {
+            return consumeFalseToken();
         }
         // Null?
         if (c == 'n') {
@@ -683,18 +683,18 @@ public final class JsonValueReader implements DataValueReader {
 
     private int readEscapedChar() throws IOException {
         final var c = readChar();
-        // TODO #optimization: Order these tests by descending probability
+        // NOTE #optimization: Tests ordered by descending probability
         if (c == QUOTATION_MARK || c == BACKSLASH) {
             return c;
         }
         if (c == 'n') {
             return LF;
         }
-        if (c == 'r') {
-            return CR;
-        }
         if (c == 't') {
             return HT;
+        }
+        if (c == 'r') {
+            return CR;
         }
         if (c == 'u') {
             return readHexDigit() << 12
@@ -948,14 +948,14 @@ public final class JsonValueReader implements DataValueReader {
     public <T extends @Nullable Object> T deserializeAny(DataValueVisitor<T> visitor) throws IOException {
         final var token = readToken();
         return switch (token) {
-            // TODO #optimization: Order these cases by descending probability
-            case NULL -> visitor.visitNull();
+            // NOTE #optimization: Cases ordered by descending probability
+            case STRING_BEGIN -> visitWithString(visitor);
+            case NUMBER_BEGIN -> visitWithNumber(visitor);
+            case OBJECT_BEGIN -> visitWithStruct(visitor);
+            case ARRAY_BEGIN -> visitWithSequence(visitor);
             case TRUE -> visitor.visitBoolean(true);
             case FALSE -> visitor.visitBoolean(false);
-            case NUMBER_BEGIN -> visitWithNumber(visitor);
-            case STRING_BEGIN -> visitWithString(visitor);
-            case ARRAY_BEGIN -> visitWithSequence(visitor);
-            case OBJECT_BEGIN -> visitWithStruct(visitor);
+            case NULL -> visitor.visitNull();
         };
     }
 
