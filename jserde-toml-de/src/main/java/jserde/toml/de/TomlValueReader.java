@@ -16,6 +16,7 @@
 
 package jserde.toml.de;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -32,6 +33,8 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Laurent Pireyn
  */
+// TODO: Remove this annotation
+@SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
 public final class TomlValueReader implements DataValueReader {
     private final Reader reader;
 

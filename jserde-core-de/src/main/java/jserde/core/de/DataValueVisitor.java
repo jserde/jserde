@@ -16,6 +16,7 @@
 
 package jserde.core.de;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -70,6 +71,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitByte(byte value) throws IOException {
         try {
             return visitShort(value);
@@ -87,6 +89,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitShort(short value) throws IOException {
         try {
             return visitInt(value);
@@ -104,6 +107,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitInt(int value) throws IOException {
         try {
             return visitLong(value);
@@ -121,6 +125,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitLong(long value) throws IOException {
         try {
             return visitBigInteger(BigInteger.valueOf(value));
@@ -138,6 +143,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitBigInteger(BigInteger value) throws IOException {
         try {
             return visitBigDecimal(new BigDecimal(value));
@@ -155,6 +161,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitFloat(float value) throws IOException {
         try {
             return visitBigDecimal(new BigDecimal(value));
@@ -172,6 +179,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitDouble(double value) throws IOException {
         try {
             return visitBigDecimal(new BigDecimal(value));
@@ -202,6 +210,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitChar(char value) throws IOException {
         try {
             return visitString(String.valueOf(value));
@@ -335,6 +344,7 @@ public interface DataValueVisitor<T extends @Nullable Object> {
      * @return the value produced by this visitor
      * @throws IOException if an I/O error occurs
      */
+    @SuppressFBWarnings("LEST_LOST_EXCEPTION_STACK_TRACE")
     default T visitStruct(DataStructReader reader) throws IOException {
         try {
             return visitMap(reader.asMapReader());

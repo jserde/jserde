@@ -16,6 +16,7 @@
 
 package jserde.json.model;
 
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.io.StringWriter;
 import jserde.core.ser.DataValueWriter;
@@ -37,6 +38,7 @@ public abstract sealed class JsonValue permits JsonNull, JsonBoolean, JsonNumber
      * @return the JSON value parsed from {@code json}
      * @throws IllegalArgumentException if {@code json} is invalid
      */
+    @SuppressFBWarnings("EXS_EXCEPTION_SOFTENING_NO_CONSTRAINTS")
     public static JsonValue parseJsonValue(String json) {
         try {
             return JsonValueDeserializer.INSTANCE.deserializeValue(new JsonValueReader(json));

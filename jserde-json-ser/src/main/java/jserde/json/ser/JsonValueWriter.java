@@ -130,7 +130,10 @@ public final class JsonValueWriter implements DataValueWriter {
         private boolean closed;
 
         @MustBeClosed
-        @SuppressFBWarnings("CT_CONSTRUCTOR_THROW")
+        @SuppressFBWarnings({
+            "CT_CONSTRUCTOR_THROW",
+            "PCOA_PARTIALLY_CONSTRUCTED_OBJECT_ACCESS",
+        })
         JsonContainerWriter() throws IOException {
             writeContainerBegin();
         }
@@ -367,6 +370,8 @@ public final class JsonValueWriter implements DataValueWriter {
     }
 
     @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public void serializeByteArray(byte[] value) throws IOException {
         // TODO: Implement
         throw new UnsupportedOperationException();

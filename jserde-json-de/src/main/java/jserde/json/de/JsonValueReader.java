@@ -18,6 +18,7 @@ package jserde.json.de;
 
 import com.google.errorprone.annotations.ForOverride;
 import com.google.errorprone.annotations.MustBeClosed;
+import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.Closeable;
 import java.io.EOFException;
 import java.io.IOException;
@@ -921,6 +922,8 @@ public final class JsonValueReader implements DataValueReader {
     }
 
     @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public <T extends @Nullable Object> T deserializeByteArray(DataValueVisitor<T> visitor) throws IOException {
         // TODO: Implement
         throw new UnsupportedOperationException();

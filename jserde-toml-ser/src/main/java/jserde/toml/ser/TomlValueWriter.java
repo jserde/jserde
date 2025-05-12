@@ -36,6 +36,8 @@ import jserde.toml.TomlFormat;
  *
  * @author Laurent Pireyn
  */
+// TODO: Remove this annotation
+@SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
 public final class TomlValueWriter implements DataValueWriter {
     private final Writer writer;
 

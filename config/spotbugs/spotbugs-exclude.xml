@@ -32,4 +32,26 @@
     <Match>
         <Bug category="PERFORMANCE"/>
     </Match>
+    <!-- Exclude some fb-contrib bugs-->
+    <Match>
+        <Or>
+            <!-- Abstract methods may override non-abstract methods -->
+            <Bug code="AOM"/>
+            <!-- Maps can be used as collections -->
+            <Bug code="DMC"/>
+            <!-- Sealed classes are not circular dependencies -->
+            <Bug code="FCCD"/>
+        </Or>
+    </Match>
+    <!-- Exclude some fb-contrib bugs in tests -->
+    <Match>
+        <!-- TODO #build: Figure out how to use <Source> here for better accuracy -->
+        <Class name="~.+Tests?"/>
+        <Or>
+            <!-- Tests may excessively use methods of other classes -->
+            <Bug code="CE"/>
+            <!-- Parameterized test methods and their source methods may have the same name -->
+            <Bug code="MOM"/>
+        </Or>
+    </Match>
 </FindBugsFilter>
