@@ -82,6 +82,10 @@ spotbugs {
     excludeFilter.set(rootProject.layout.projectDirectory.file("config/spotbugs/spotbugs-exclude.xml"))
 }
 
+dependencies {
+    spotbugsPlugins("com.h3xstream.findsecbugs:findsecbugs-plugin:1.14.0")
+}
+
 tasks.withType<SpotBugsTask> {
     reports.create("xml") {
         required.set(true)
