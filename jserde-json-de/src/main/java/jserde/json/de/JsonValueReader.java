@@ -60,11 +60,17 @@ import org.jspecify.annotations.Nullable;
 /**
  * JSON {@link DataValueReader}.
  *
+ * <p>This value reader has a {@linkplain #getMaxNestingDepth() maximum nesting depth}.
+ * If this value is exceeded, the deserialization will fail with a {@link DeserializationException}.
+ * If this value is lesser than zero, the nesting depth is unlimited.
+ *
  * @author Laurent Pireyn
  */
 public final class JsonValueReader implements DataValueReader {
-    // TODO #improvement: Make max nesting depth configurable
-    private static final int MAX_NESTING_DEPTH = 100;
+    /**
+     * Default maximum nesting depth: {@value}.
+     */
+    public static final int DEFAULT_MAX_NESTING_DEPTH = 500;
 
     private static boolean isWs(int c) {
         // TODO #optimization: Order these tests by descending probability
@@ -354,6 +360,11 @@ public final class JsonValueReader implements DataValueReader {
     private final JsonStringReader stringReader = new JsonStringReader();
 
     /**
+     * Maximum nesting depth.
+     */
+    private int maxNestingDepth = DEFAULT_MAX_NESTING_DEPTH;
+
+    /**
      * Current nesting depth.
      */
     private int nestingDepth;
@@ -396,6 +407,28 @@ public final class JsonValueReader implements DataValueReader {
     // NOTE: This is not annotated with @MustBeClosed, as not all InputStream subclasses require to be closed
     public JsonValueReader(InputStream input) {
         this(new InputStreamReader(input, JsonFormat.DEFAULT_CHARSET));
+    }
+
+    /**
+     * Returns the maximum nesting depth allowed by this value reader.
+     *
+     * <p>The initial maximum nesting depth is {@value DEFAULT_MAX_NESTING_DEPTH}.
+     *
+     * @return the maximum nesting depth allowed by this value reader
+     * (a negative value means an unlimited nesting depth)
+     */
+    public int getMaxNestingDepth() {
+        return maxNestingDepth;
+    }
+
+    /**
+     * Sets the maximum nesting depth allowed by this value reader.
+     *
+     * @param maxNestingDepth the maximum nesting depth allowed by this value reader
+     * (a negative value means an unlimited nesting depth)
+     */
+    public void setMaxNestingDepth(int maxNestingDepth) {
+        this.maxNestingDepth = maxNestingDepth;
     }
 
     // Reader-related methods
@@ -929,15 +962,21 @@ public final class JsonValueReader implements DataValueReader {
     // Container readers-related methods
 
     private void beforeOpenContainerReader() throws DeserializationException {
-        if (nestingDepth == MAX_NESTING_DEPTH) {
-            throw new DeserializationException("The maximum nesting depth of " + MAX_NESTING_DEPTH + " has been reached");
+        if (maxNestingDepth >= 0) {
+            // NOTE: We don't increment nestingDepth if maxNestingDepth is unlimited
+            if (nestingDepth == maxNestingDepth) {
+                throw new DeserializationException("The maximum nesting depth of " + maxNestingDepth + " has been reached");
+            }
+            ++nestingDepth;
         }
-        ++nestingDepth;
     }
 
     private void afterCloseContainerReader() {
-        --nestingDepth;
-        assert nestingDepth >= 0;
+        if (maxNestingDepth >= 0) {
+            // NOTE: We don't decrement nestingDepth if maxNestingDepth is unlimited
+            --nestingDepth;
+            assert nestingDepth >= 0;
+        }
     }
 
     @MustBeClosed
