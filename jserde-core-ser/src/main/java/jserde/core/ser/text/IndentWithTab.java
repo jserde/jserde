@@ -14,24 +14,29 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
+package jserde.core.ser.text;
+
+import java.io.IOException;
+import java.io.Writer;
 
 /**
- * Core JSerde serialization components.
+ * {@link Indentation} that uses a tab character as indent.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.core.ser {
-    requires transitive jserde.core;
-    requires transitive org.jspecify;
-    requires jserde.io;
-    requires static com.google.errorprone.annotations;
-    exports jserde.core.ser;
-    exports jserde.core.ser.factory;
-    exports jserde.core.ser.holder;
-    exports jserde.core.ser.resolver;
-    exports jserde.core.ser.service;
-    exports jserde.core.ser.standard;
-    exports jserde.core.ser.text;
+final class IndentWithTab extends Indentation {
+    static final IndentWithTab INSTANCE = new IndentWithTab();
+
+    private IndentWithTab() {
+    }
+
+    @Override
+    public String getIndent() {
+        return "\t";
+    }
+
+    @Override
+    public void writeIndent(Writer writer) throws IOException {
+        writer.write('\t');
+    }
 }

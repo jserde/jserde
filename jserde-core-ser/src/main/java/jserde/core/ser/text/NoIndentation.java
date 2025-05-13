@@ -14,24 +14,33 @@
  * limitations under the License.
  */
 
-import org.jspecify.annotations.NullMarked;
+package jserde.core.ser.text;
+
+import java.io.Writer;
 
 /**
- * Core JSerde serialization components.
+ * {@link Indentation} that has an empty indent.
  *
  * @author Laurent Pireyn
  */
-@NullMarked
-module jserde.core.ser {
-    requires transitive jserde.core;
-    requires transitive org.jspecify;
-    requires jserde.io;
-    requires static com.google.errorprone.annotations;
-    exports jserde.core.ser;
-    exports jserde.core.ser.factory;
-    exports jserde.core.ser.holder;
-    exports jserde.core.ser.resolver;
-    exports jserde.core.ser.service;
-    exports jserde.core.ser.standard;
-    exports jserde.core.ser.text;
+final class NoIndentation extends Indentation {
+    static final NoIndentation INSTANCE = new NoIndentation();
+
+    private NoIndentation() {
+    }
+
+    @Override
+    public String getIndent() {
+        return "";
+    }
+
+    @Override
+    public void writeIndent(Writer writer) {
+        // Do nothing
+    }
+
+    @Override
+    public void writeIndent(Writer writer, int count) {
+        // Do nothing
+    }
 }
