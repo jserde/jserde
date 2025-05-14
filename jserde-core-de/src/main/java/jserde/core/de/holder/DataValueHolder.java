@@ -21,6 +21,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.Collection;
 import java.util.Map;
 import jserde.core.de.DataValueReader;
@@ -32,7 +36,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Laurent Pireyn
  */
-public abstract sealed class DataValueHolder implements DataValueReader permits NullValueHolder, BooleanValueHolder, ByteValueHolder, ShortValueHolder, IntValueHolder, LongValueHolder, BigIntegerValueHolder, FloatValueHolder, DoubleValueHolder, BigDecimalValueHolder, CharValueHolder, StringValueHolder, ByteArrayValueHolder, SequenceValueHolder, MapValueHolder, StructValueHolder {
+public abstract sealed class DataValueHolder implements DataValueReader permits NullValueHolder, BooleanValueHolder, ByteValueHolder, ShortValueHolder, IntValueHolder, LongValueHolder, BigIntegerValueHolder, FloatValueHolder, DoubleValueHolder, BigDecimalValueHolder, CharValueHolder, StringValueHolder, ByteArrayValueHolder, LocalDateValueHolder, LocalTimeValueHolder, LocalDateTimeValueHolder, OffsetDateTimeValueHolder, SequenceValueHolder, MapValueHolder, StructValueHolder {
     /**
      * Returns a data value holder that holds the given fixed value.
      *
@@ -79,6 +83,18 @@ public abstract sealed class DataValueHolder implements DataValueReader permits 
         }
         if (value instanceof final byte[] valueAsByteArray) {
             return new ByteArrayValueHolder(valueAsByteArray);
+        }
+        if (value instanceof final LocalDate valueAsLocalDate) {
+            return new LocalDateValueHolder(valueAsLocalDate);
+        }
+        if (value instanceof final LocalTime valueAsLocalTime) {
+            return new LocalTimeValueHolder(valueAsLocalTime);
+        }
+        if (value instanceof final LocalDateTime valueAsLocalDateTime) {
+            return new LocalDateTimeValueHolder(valueAsLocalDateTime);
+        }
+        if (value instanceof final OffsetDateTime valueAsOffsetDateTime) {
+            return new OffsetDateTimeValueHolder(valueAsOffsetDateTime);
         }
         if (value instanceof final Collection<?> valueAsCollection) {
             return new SequenceValueHolder(valueAsCollection);
@@ -153,6 +169,26 @@ public abstract sealed class DataValueHolder implements DataValueReader permits 
 
     @Override
     public final <T extends @Nullable Object> T deserializeByteArray(DataValueVisitor<T> visitor) throws IOException {
+        return deserializeValueIfNotDone(visitor);
+    }
+
+    @Override
+    public final <T extends @Nullable Object> T deserializeLocalDate(DataValueVisitor<T> visitor) throws IOException {
+        return deserializeValueIfNotDone(visitor);
+    }
+
+    @Override
+    public final <T extends @Nullable Object> T deserializeLocalTime(DataValueVisitor<T> visitor) throws IOException {
+        return deserializeValueIfNotDone(visitor);
+    }
+
+    @Override
+    public final <T extends @Nullable Object> T deserializeLocalDateTime(DataValueVisitor<T> visitor) throws IOException {
+        return deserializeValueIfNotDone(visitor);
+    }
+
+    @Override
+    public final <T extends @Nullable Object> T deserializeOffsetDateTime(DataValueVisitor<T> visitor) throws IOException {
         return deserializeValueIfNotDone(visitor);
     }
 

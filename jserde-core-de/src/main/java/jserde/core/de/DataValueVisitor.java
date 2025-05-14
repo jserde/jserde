@@ -25,6 +25,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 import jserde.core.DataType;
 import jserde.io.LightCharArrayWriter;
@@ -306,6 +310,58 @@ public interface DataValueVisitor<T extends @Nullable Object> {
             value = output.toByteArray();
         }
         return visitByteArray(value);
+    }
+
+    /**
+     * Produces a value from a {@link DataType#LOCAL_DATE} given as a {@link LocalDate}.
+     *
+     * <p>The default implementation throws {@link #unsupportedTypeException(DataType)}.
+     *
+     * @param value the value
+     * @return the value produced by this visitor
+     * @throws IOException if an I/O error occurs
+     */
+    default T visitLocalDate(LocalDate value) throws IOException {
+        throw unsupportedTypeException(DataType.LOCAL_DATE);
+    }
+
+    /**
+     * Produces a value from a {@link DataType#LOCAL_TIME} given as a {@link LocalTime}.
+     *
+     * <p>The default implementation throws {@link #unsupportedTypeException(DataType)}.
+     *
+     * @param value the value
+     * @return the value produced by this visitor
+     * @throws IOException if an I/O error occurs
+     */
+    default T visitLocalTime(LocalTime value) throws IOException {
+        throw unsupportedTypeException(DataType.LOCAL_TIME);
+    }
+
+    /**
+     * Produces a value from a {@link DataType#LOCAL_DATE_TIME} given as a {@link LocalDateTime}.
+     *
+     * <p>The default implementation throws {@link #unsupportedTypeException(DataType)}.
+     *
+     * @param value the value
+     * @return the value produced by this visitor
+     * @throws IOException if an I/O error occurs
+     */
+    default T visitLocalDateTime(LocalDateTime value) throws IOException {
+        throw unsupportedTypeException(DataType.LOCAL_DATE_TIME);
+    }
+
+    /**
+     * Produces a value from a {@link DataType#OFFSET_DATE_TIME} given as a {@link OffsetDateTime}.
+     *
+     * <p>The default implementation throws {@link #unsupportedTypeException(DataType)}.
+     *
+     * @param value the value
+     * @return the value produced by this visitor
+     * @throws IOException if an I/O error occurs
+     */
+    default T visitOffsetDateTime(OffsetDateTime value) throws IOException {
+        throw unsupportedTypeException(DataType.OFFSET_DATE_TIME);
     }
 
     /**

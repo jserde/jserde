@@ -30,7 +30,7 @@ import org.jspecify.annotations.Nullable;
  * @author Laurent Pireyn
  * @param <T> the type of value produced by this deserializer
  */
-public abstract sealed class StandardValueDeserializer<T extends @Nullable Object> implements ValueDeserializer<T>, DataValueVisitor<T> permits StandardNullDeserializer, StandardBooleanDeserializer, StandardNumberDeserializer, StandardCharDeserializer, StandardStringDeserializer, StandardByteArrayDeserializer, StandardListDeserializer, StandardMapDeserializer, StandardStructDeserializer, StandardObjectDeserializer {
+public abstract sealed class StandardValueDeserializer<T extends @Nullable Object> implements ValueDeserializer<T>, DataValueVisitor<T> permits StandardNullDeserializer, StandardBooleanDeserializer, StandardNumberDeserializer, StandardCharDeserializer, StandardStringDeserializer, StandardByteArrayDeserializer, StandardLocalDateDeserializer, StandardLocalTimeDeserializer, StandardLocalDateTimeDeserializer, StandardOffsetDateTimeDeserializer, StandardListDeserializer, StandardMapDeserializer, StandardStructDeserializer, StandardObjectDeserializer {
     @Override
     public abstract Set<DataType> getSupportedTypes();
 

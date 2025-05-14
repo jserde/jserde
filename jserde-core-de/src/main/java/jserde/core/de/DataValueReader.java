@@ -198,6 +198,46 @@ public non-sealed interface DataValueReader extends DataReader, Closeable {
     }
 
     /**
+     * Deserializes a value with the given visitor, hinting that it expects a {@link DataType#LOCAL_DATE}.
+     *
+     * @param visitor the visitor
+     * @param <T> the type of value produced by {@code visitor}
+     * @return the deserialized value
+     * @throws IOException if an I/O error occurs
+     */
+    <T extends @Nullable Object> T deserializeLocalDate(DataValueVisitor<T> visitor) throws IOException;
+
+    /**
+     * Deserializes a value with the given visitor, hinting that it expects a {@link DataType#LOCAL_TIME}.
+     *
+     * @param visitor the visitor
+     * @param <T> the type of value produced by {@code visitor}
+     * @return the deserialized value
+     * @throws IOException if an I/O error occurs
+     */
+    <T extends @Nullable Object> T deserializeLocalTime(DataValueVisitor<T> visitor) throws IOException;
+
+    /**
+     * Deserializes a value with the given visitor, hinting that it expects a {@link DataType#LOCAL_DATE_TIME}.
+     *
+     * @param visitor the visitor
+     * @param <T> the type of value produced by {@code visitor}
+     * @return the deserialized value
+     * @throws IOException if an I/O error occurs
+     */
+    <T extends @Nullable Object> T deserializeLocalDateTime(DataValueVisitor<T> visitor) throws IOException;
+
+    /**
+     * Deserializes a value with the given visitor, hinting that it expects a {@link DataType#OFFSET_DATE_TIME}.
+     *
+     * @param visitor the visitor
+     * @param <T> the type of value produced by {@code visitor}
+     * @return the deserialized value
+     * @throws IOException if an I/O error occurs
+     */
+    <T extends @Nullable Object> T deserializeOffsetDateTime(DataValueVisitor<T> visitor) throws IOException;
+
+    /**
      * Deserializes a value with the given visitor, hinting that it expects a {@link DataType#SEQUENCE}.
      *
      * @param visitor the visitor

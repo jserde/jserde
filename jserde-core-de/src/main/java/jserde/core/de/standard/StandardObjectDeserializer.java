@@ -20,6 +20,10 @@ import com.google.errorprone.annotations.Immutable;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -113,6 +117,26 @@ public final class StandardObjectDeserializer extends StandardValueDeserializer<
     @Override
     public byte[] visitByteArray(byte[] value) {
         return StandardByteArrayDeserializer.INSTANCE.visitByteArray(value);
+    }
+
+    @Override
+    public LocalDate visitLocalDate(LocalDate value) {
+        return StandardLocalDateDeserializer.INSTANCE.visitLocalDate(value);
+    }
+
+    @Override
+    public LocalTime visitLocalTime(LocalTime value) {
+        return StandardLocalTimeDeserializer.INSTANCE.visitLocalTime(value);
+    }
+
+    @Override
+    public LocalDateTime visitLocalDateTime(LocalDateTime value) {
+        return StandardLocalDateTimeDeserializer.INSTANCE.visitLocalDateTime(value);
+    }
+
+    @Override
+    public OffsetDateTime visitOffsetDateTime(OffsetDateTime value) {
+        return StandardOffsetDateTimeDeserializer.INSTANCE.visitOffsetDateTime(value);
     }
 
     @Override

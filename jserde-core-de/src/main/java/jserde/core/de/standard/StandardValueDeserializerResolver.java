@@ -19,6 +19,10 @@ package jserde.core.de.standard;
 import com.google.errorprone.annotations.Immutable;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import jserde.core.de.ValueDeserializer;
@@ -66,6 +70,14 @@ public final class StandardValueDeserializerResolver implements ValueDeserialize
             deserializer = StandardStringDeserializer.INSTANCE;
         } else if (cls.equals(byte[].class)) {
             deserializer = StandardByteArrayDeserializer.INSTANCE;
+        } else if (cls.equals(LocalDate.class)) {
+            deserializer = StandardLocalDateDeserializer.INSTANCE;
+        } else if (cls.equals(LocalTime.class)) {
+            deserializer = StandardLocalTimeDeserializer.INSTANCE;
+        } else if (cls.equals(LocalDateTime.class)) {
+            deserializer = StandardLocalDateTimeDeserializer.INSTANCE;
+        } else if (cls.equals(OffsetDateTime.class)) {
+            deserializer = StandardOffsetDateTimeDeserializer.INSTANCE;
         } else if (List.class.isAssignableFrom(cls)) {
             deserializer = StandardListDeserializer.INSTANCE;
         } else if (Map.class.isAssignableFrom(cls)) {

@@ -21,6 +21,10 @@ import java.io.InputStream;
 import java.io.Reader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.Set;
 import jserde.core.DataType;
 import org.jspecify.annotations.Nullable;
@@ -112,6 +116,26 @@ public final class DiscardingDataValueVisitor implements DataValueVisitor<@Nulla
     @Override
     public @Nullable Void visitByteArray(InputStream input, int lengthHint) throws IOException {
         input.close();
+        return null;
+    }
+
+    @Override
+    public @Nullable Void visitLocalDate(LocalDate value) {
+        return null;
+    }
+
+    @Override
+    public @Nullable Void visitLocalTime(LocalTime value) {
+        return null;
+    }
+
+    @Override
+    public @Nullable Void visitLocalDateTime(LocalDateTime value) {
+        return null;
+    }
+
+    @Override
+    public @Nullable Void visitOffsetDateTime(OffsetDateTime value) {
         return null;
     }
 

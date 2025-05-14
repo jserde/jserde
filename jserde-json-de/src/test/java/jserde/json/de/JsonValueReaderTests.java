@@ -495,6 +495,22 @@ class JsonValueReaderTests extends AbstractTests {
 
     // TODO #test: testDeserializeByteArrayInvalid
 
+    // TODO #test: testDeserializeLocalDate
+
+    // TODO #test: testDeserializeLocalDateInvalid
+
+    // TODO #test: testDeserializeLocalTime
+
+    // TODO #test: testDeserializeLocalTimeInvalid
+
+    // TODO #test: testDeserializeLocalDateTime
+
+    // TODO #test: testDeserializeLocalDateTimeInvalid
+
+    // TODO #test: testDeserializeOffsetDateTime
+
+    // TODO #test: testDeserializeOffsetDateTimeInvalid
+
     @ParameterizedTest
     @MethodSource
     void testDeserializeSequence(String input, List<@Nullable Object> value) throws IOException {

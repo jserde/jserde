@@ -19,6 +19,11 @@ package jserde.core.de.standard;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.List;
 import jserde.core.de.holder.DataValueHolder;
 import jserde.test.AbstractTests;
@@ -93,7 +98,15 @@ class StandardDeserializersTests extends AbstractTests {
             // Char
             arguments(StandardCharDeserializer.INSTANCE, 'a'),
             // String
-            arguments(StandardStringDeserializer.INSTANCE, "abc")
+            arguments(StandardStringDeserializer.INSTANCE, "abc"),
+            // Local date
+            arguments(StandardLocalDateDeserializer.INSTANCE, LocalDate.of(2025, 5, 1)),
+            // Local time
+            arguments(StandardLocalTimeDeserializer.INSTANCE, LocalTime.of(17, 49, 13)),
+            // Local date-time
+            arguments(StandardLocalDateTimeDeserializer.INSTANCE, LocalDateTime.of(2025, 5, 1, 17, 49, 13)),
+            // Offset date-time
+            arguments(StandardOffsetDateTimeDeserializer.INSTANCE, OffsetDateTime.of(2025, 5, 1, 17, 49, 13, 0, ZoneOffset.ofHours(2)))
         );
     }
 }

@@ -166,6 +166,30 @@ public final class TomlValueReader implements DataValueReader {
     }
 
     @Override
+    public <T extends @Nullable Object> T deserializeLocalDate(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends @Nullable Object> T deserializeLocalTime(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends @Nullable Object> T deserializeLocalDateTime(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public <T extends @Nullable Object> T deserializeOffsetDateTime(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public <T extends @Nullable Object> T deserializeSequence(DataValueVisitor<T> visitor) throws IOException {
         // TODO: Implement
         throw new UnsupportedOperationException();

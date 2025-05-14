@@ -930,6 +930,38 @@ public final class JsonValueReader implements DataValueReader {
     }
 
     @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public <T extends @Nullable Object> T deserializeLocalDate(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public <T extends @Nullable Object> T deserializeLocalTime(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public <T extends @Nullable Object> T deserializeLocalDateTime(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public <T extends @Nullable Object> T deserializeOffsetDateTime(DataValueVisitor<T> visitor) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public <T extends @Nullable Object> T deserializeSequence(DataValueVisitor<T> visitor) throws IOException {
         readTokenExpecting(JsonToken.ARRAY_BEGIN);
         return visitWithSequence(visitor);
