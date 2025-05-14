@@ -18,6 +18,10 @@ package jserde.json.de;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import jserde.core.de.ValueDeserializer;
@@ -28,9 +32,13 @@ import jserde.core.de.standard.StandardByteDeserializer;
 import jserde.core.de.standard.StandardCharDeserializer;
 import jserde.core.de.standard.StandardIntDeserializer;
 import jserde.core.de.standard.StandardListDeserializer;
+import jserde.core.de.standard.StandardLocalDateDeserializer;
+import jserde.core.de.standard.StandardLocalDateTimeDeserializer;
+import jserde.core.de.standard.StandardLocalTimeDeserializer;
 import jserde.core.de.standard.StandardLongDeserializer;
 import jserde.core.de.standard.StandardMapDeserializer;
 import jserde.core.de.standard.StandardNullDeserializer;
+import jserde.core.de.standard.StandardOffsetDateTimeDeserializer;
 import jserde.core.de.standard.StandardShortDeserializer;
 import jserde.core.de.standard.StandardStringDeserializer;
 import jserde.test.AbstractTests;
@@ -495,21 +503,130 @@ class JsonValueReaderTests extends AbstractTests {
 
     // TODO #test: testDeserializeByteArrayInvalid
 
-    // TODO #test: testDeserializeLocalDate
+    @ParameterizedTest
+    @CsvSource({
+        "2025-05-01,2025-05-01",
+    })
+    void testDeserializeLocalDate(String input, LocalDate value) throws IOException {
+        assertDeserializeValue(value, quoted(input), StandardLocalDateDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeLocalDateInvalid
+    @ParameterizedTest
+    @ValueSource(strings = {
+        // Empty
+        "",
+        // Empty string
+        "\"\"",
+        // No double quotes
+        "2025-05-01",
+        // Time
+        "\"17:49:13\"",
+        // Date-time
+        "\"2025-05-01T17:49:13\"",
+        "\"2025-05-01T17:49:13.123\"",
+    })
+    void testDeserializeLocalDateInvalid(String input) {
+        assertDeserializeValueInvalid(input, StandardLocalDateDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeLocalTime
+    @ParameterizedTest
+    @CsvSource({
+        "17:49:13,17:49:13",
+        "17:49:13.123,17:49:13.123",
+    })
+    void testDeserializeLocalTime(String input, LocalTime value) throws IOException {
+        assertDeserializeValue(value, quoted(input), StandardLocalTimeDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeLocalTimeInvalid
+    @ParameterizedTest
+    @ValueSource(strings = {
+        // Empty
+        "",
+        // Empty string
+        "\"\"",
+        // No double quotes
+        "17:49:13",
+        "17:49:13.123",
+        // Date
+        "\"2025-05-01\"",
+        // Date-time
+        "\"2025-05-01T17:49:13\"",
+        "\"2025-05-01T17:49:13.123\"",
+    })
+    void testDeserializeLocalTimeInvalid(String input) {
+        assertDeserializeValueInvalid(input, StandardLocalTimeDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeLocalDateTime
+    @ParameterizedTest
+    @CsvSource({
+        "2025-05-01T17:49:13Z,2025-05-01T17:49:13",
+        "2025-05-01T17:49:13.123Z,2025-05-01T17:49:13.123",
+    })
+    void testDeserializeLocalDateTime(String input, LocalDateTime value) throws IOException {
+        assertDeserializeValue(value, quoted(input), StandardLocalDateTimeDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeLocalDateTimeInvalid
+    @ParameterizedTest
+    @ValueSource(strings = {
+        // Empty
+        "",
+        // Empty string
+        "\"\"",
+        // No double quotes
+        "2025-05-01T17:49:13",
+        "2025-05-01T17:49:13.123",
+        // No offset
+        "2025-05-01T17:49:13,2025-05-01T17:49:13",
+        "2025-05-01T17:49:13.123,2025-05-01T17:49:13.123",
+        // Date
+        "\"2025-05-01\"",
+        // Time
+        "\"17:49:13\"",
+        "\"17:49:13.123\"",
+        // Offset date-time
+        "\"2025-05-01T17:49:13+02\"",
+        "\"2025-05-01T17:49:13.123+02\"",
+        "\"2025-05-01T17:49:13+02:00\"",
+        "\"2025-05-01T17:49:13.123+02:00\"",
+    })
+    void testDeserializeLocalDateTimeInvalid(String input) {
+        assertDeserializeValueInvalid(input, StandardLocalDateTimeDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeOffsetDateTime
+    @ParameterizedTest
+    @CsvSource({
+        "2025-05-01T17:49:13Z,2025-05-01T17:49:13Z",
+        "2025-05-01T17:49:13.123Z,2025-05-01T17:49:13.123Z",
+        "2025-05-01T17:49:13+02,2025-05-01T17:49:13+02",
+        "2025-05-01T17:49:13+02:30,2025-05-01T17:49:13+02:30",
+        "2025-05-01T17:49:13.123+02,2025-05-01T17:49:13.123+02",
+        "2025-05-01T17:49:13.123+02:30,2025-05-01T17:49:13.123+02:30",
+    })
+    void testDeserializeOffsetDateTime(String input, OffsetDateTime value) throws IOException {
+        assertDeserializeValue(value, quoted(input), StandardOffsetDateTimeDeserializer.INSTANCE);
+    }
 
-    // TODO #test: testDeserializeOffsetDateTimeInvalid
+    @ParameterizedTest
+    @ValueSource(strings = {
+        // Empty
+        "",
+        // Empty string
+        "\"\"",
+        // No double quotes
+        "2025-05-01T17:49:13",
+        "2025-05-01T17:49:13.123",
+        // No offset
+        "2025-05-01T17:49:13,2025-05-01T17:49:13",
+        "2025-05-01T17:49:13.123,2025-05-01T17:49:13.123",
+        // Date
+        "\"2025-05-01\"",
+        // Time
+        "\"17:49:13\"",
+        "\"17:49:13.123\"",
+    })
+    void testDeserializeOffsetDateTimeInvalid(String input) {
+        assertDeserializeValueInvalid(input, StandardOffsetDateTimeDeserializer.INSTANCE);
+    }
 
     @ParameterizedTest
     @MethodSource

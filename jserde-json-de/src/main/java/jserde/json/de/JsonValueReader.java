@@ -28,6 +28,13 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.NoSuchElementException;
 import jserde.core.de.DataContainerReader;
 import jserde.core.de.DataSequenceReader;
@@ -72,6 +79,21 @@ public final class JsonValueReader implements DataValueReader {
      * Default maximum nesting depth: {@value}.
      */
     public static final int DEFAULT_MAX_NESTING_DEPTH = 500;
+
+    /**
+     * {@link DateTimeFormatter} used for {@link LocalDate} values.
+     */
+    private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    /**
+     * {@link DateTimeFormatter} used for {@link LocalTime} values.
+     */
+    private static final DateTimeFormatter LOCAL_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
+
+    /**
+     * {@link DateTimeFormatter} used for {@link OffsetDateTime} values (and therefore {@link LocalDateTime} values).
+     */
+    private static final DateTimeFormatter OFFSET_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
 
     private static boolean isWs(int c) {
         // NOTE #optimization: Tests ordered by descending probability
@@ -930,35 +952,27 @@ public final class JsonValueReader implements DataValueReader {
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public <T extends @Nullable Object> T deserializeLocalDate(DataValueVisitor<T> visitor) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        readTokenExpecting(JsonToken.STRING_BEGIN);
+        return visitWithLocalDate(visitor);
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public <T extends @Nullable Object> T deserializeLocalTime(DataValueVisitor<T> visitor) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        readTokenExpecting(JsonToken.STRING_BEGIN);
+        return visitWithLocalTime(visitor);
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public <T extends @Nullable Object> T deserializeLocalDateTime(DataValueVisitor<T> visitor) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        readTokenExpecting(JsonToken.STRING_BEGIN);
+        return visitWithLocalDateTime(visitor);
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public <T extends @Nullable Object> T deserializeOffsetDateTime(DataValueVisitor<T> visitor) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        readTokenExpecting(JsonToken.STRING_BEGIN);
+        return visitWithOffsetDateTime(visitor);
     }
 
     @Override
@@ -1117,6 +1131,55 @@ public final class JsonValueReader implements DataValueReader {
         try (var reader = openStringReader()) {
             return visitor.visitString(reader, -1);
         }
+    }
+
+    private <T extends @Nullable Object> T visitWithLocalDate(DataValueVisitor<T> visitor) throws IOException {
+        final LocalDate value;
+        final var valueAsString = getStringValue();
+        try {
+            value = LocalDate.parse(valueAsString, LOCAL_DATE_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new InvalidValueException("The string is not a valid ISO-8601 local date: " + valueAsString, e);
+        }
+        return visitor.visitLocalDate(value);
+    }
+
+    private <T extends @Nullable Object> T visitWithLocalTime(DataValueVisitor<T> visitor) throws IOException {
+        final LocalTime value;
+        final var valueAsString = getStringValue();
+        try {
+            value = LocalTime.parse(valueAsString, LOCAL_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new InvalidValueException("The string is not a valid ISO-8601 local time: " + valueAsString, e);
+        }
+        return visitor.visitLocalTime(value);
+    }
+
+    private <T extends @Nullable Object> T visitWithLocalDateTime(DataValueVisitor<T> visitor) throws IOException {
+        final OffsetDateTime valueAsOffsetDateTime;
+        final var valueAsString = getStringValue();
+        try {
+            // NOTE: Deserialize a local date-time as an offset date-time at UTC
+            valueAsOffsetDateTime = OffsetDateTime.parse(valueAsString, OFFSET_DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new InvalidValueException("The string is not a valid ISO-8601 local date-time: " + valueAsString, e);
+        }
+        // TODO #design: Should we allow any offset and convert the date-time to a local date-time at UTC?
+        if (!valueAsOffsetDateTime.getOffset().equals(ZoneOffset.UTC)) {
+            throw new InvalidValueException("The date-time is not at UTC: " + valueAsOffsetDateTime);
+        }
+        return visitor.visitLocalDateTime(valueAsOffsetDateTime.toLocalDateTime());
+    }
+
+    private <T extends @Nullable Object> T visitWithOffsetDateTime(DataValueVisitor<T> visitor) throws IOException {
+        final OffsetDateTime value;
+        final var valueAsString = getStringValue();
+        try {
+            value = OffsetDateTime.parse(valueAsString, OFFSET_DATE_TIME_FORMATTER);
+        } catch (DateTimeParseException e) {
+            throw new InvalidValueException("The string is not a valid ISO-8601 offset date-time: " + valueAsString, e);
+        }
+        return visitor.visitOffsetDateTime(value);
     }
 
     private <T extends @Nullable Object> T visitWithSequence(DataValueVisitor<T> visitor) throws IOException {
