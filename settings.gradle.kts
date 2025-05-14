@@ -34,6 +34,7 @@ plugins {
 rootProject.name = "jserde"
 
 include(
+    ":jserde-annotations",
     ":jserde-bom",
     ":jserde-core",
     ":jserde-core-de",
