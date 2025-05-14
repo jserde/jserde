@@ -29,6 +29,10 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.Locale;
 import jserde.core.ser.DataMapWriter;
 import jserde.core.ser.DataSequenceWriter;
@@ -385,6 +389,38 @@ public final class JsonValueWriter implements DataValueWriter {
     // TODO: Remove this annotation
     @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public void serializeByteArray(byte[] value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public void serializeLocalDate(LocalDate value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public void serializeLocalTime(LocalTime value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public void serializeLocalDateTime(LocalDateTime value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    // TODO: Remove this annotation
+    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
+    public void serializeOffsetDateTime(OffsetDateTime value) throws IOException {
         // TODO: Implement
         throw new UnsupportedOperationException();
     }

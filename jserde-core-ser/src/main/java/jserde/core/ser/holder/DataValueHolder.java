@@ -22,6 +22,10 @@ import java.io.EOFException;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import jserde.core.DataType;
 import jserde.core.ser.DataMapWriter;
 import jserde.core.ser.DataSequenceWriter;
@@ -36,7 +40,7 @@ import org.jspecify.annotations.Nullable;
  * @author Laurent Pireyn
  * @param <T> the type of value held by this class
  */
-public abstract sealed class DataValueHolder<T extends @Nullable Object> implements DataValueWriter permits NullValueHolder, BooleanValueHolder, ByteValueHolder, ShortValueHolder, IntValueHolder, LongValueHolder, BigIntegerValueHolder, FloatValueHolder, DoubleValueHolder, BigDecimalValueHolder, CharValueHolder, StringValueHolder, ByteArrayValueHolder, SequenceValueHolder, MapValueHolder, StructValueHolder, ObjectValueHolder {
+public abstract sealed class DataValueHolder<T extends @Nullable Object> implements DataValueWriter permits NullValueHolder, BooleanValueHolder, ByteValueHolder, ShortValueHolder, IntValueHolder, LongValueHolder, BigIntegerValueHolder, FloatValueHolder, DoubleValueHolder, BigDecimalValueHolder, CharValueHolder, StringValueHolder, ByteArrayValueHolder, LocalDateValueHolder, LocalTimeValueHolder, LocalDateTimeValueHolder, OffsetDateTimeValueHolder, SequenceValueHolder, MapValueHolder, StructValueHolder, ObjectValueHolder {
     private boolean serialized;
 
     @Override
@@ -102,6 +106,26 @@ public abstract sealed class DataValueHolder<T extends @Nullable Object> impleme
     @Override
     public void serializeByteArray(byte[] value) throws IOException {
         throw unsupportedTypeException(DataType.BYTE_ARRAY);
+    }
+
+    @Override
+    public void serializeLocalDate(LocalDate value) throws IOException {
+        throw unsupportedTypeException(DataType.LOCAL_DATE);
+    }
+
+    @Override
+    public void serializeLocalTime(LocalTime value) throws IOException {
+        throw unsupportedTypeException(DataType.LOCAL_TIME);
+    }
+
+    @Override
+    public void serializeLocalDateTime(LocalDateTime value) throws IOException {
+        throw unsupportedTypeException(DataType.LOCAL_DATE_TIME);
+    }
+
+    @Override
+    public void serializeOffsetDateTime(OffsetDateTime value) throws IOException {
+        throw unsupportedTypeException(DataType.OFFSET_DATE_TIME);
     }
 
     @Override

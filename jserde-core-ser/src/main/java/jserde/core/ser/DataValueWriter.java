@@ -25,6 +25,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import jserde.core.DataType;
 import jserde.io.LightCharArrayWriter;
 
@@ -193,6 +197,38 @@ public non-sealed interface DataValueWriter extends DataWriter {
         }
         serializeByteArray(value);
     }
+
+    /**
+     * Serializes a {@link DataType#LOCAL_DATE}.
+     *
+     * @param value the value to serialize
+     * @throws IOException if an I/O error occurs
+     */
+    void serializeLocalDate(LocalDate value) throws IOException;
+
+    /**
+     * Serializes a {@link DataType#LOCAL_TIME}.
+     *
+     * @param value the value to serialize
+     * @throws IOException if an I/O error occurs
+     */
+    void serializeLocalTime(LocalTime value) throws IOException;
+
+    /**
+     * Serializes a {@link DataType#LOCAL_DATE_TIME}.
+     *
+     * @param value the value to serialize
+     * @throws IOException if an I/O error occurs
+     */
+    void serializeLocalDateTime(LocalDateTime value) throws IOException;
+
+    /**
+     * Serializes an {@link DataType#OFFSET_DATE_TIME}.
+     *
+     * @param value the value to serialize
+     * @throws IOException if an I/O error occurs
+     */
+    void serializeOffsetDateTime(OffsetDateTime value) throws IOException;
 
     /**
      * Starts serializing a {@link DataType#SEQUENCE}.

@@ -25,7 +25,7 @@ import org.jspecify.annotations.Nullable;
  * @author Laurent Pireyn
  * @param <T> the type of value supported by this serializer
  */
-public abstract sealed class StandardValueSerializer<T extends @Nullable Object> implements ValueSerializer<T> permits StandardNullSerializer, StandardBooleanSerializer, StandardByteSerializer, StandardShortSerializer, StandardIntSerializer, StandardLongSerializer, StandardBigIntegerSerializer, StandardFloatSerializer, StandardDoubleSerializer, StandardBigDecimalSerializer, StandardCharSerializer, StandardStringSerializer, StandardByteArraySerializer, StandardCollectionSerializer, StandardMapSerializer, StandardStructSerializer {
+public abstract sealed class StandardValueSerializer<T extends @Nullable Object> implements ValueSerializer<T> permits StandardNullSerializer, StandardBooleanSerializer, StandardByteSerializer, StandardShortSerializer, StandardIntSerializer, StandardLongSerializer, StandardBigIntegerSerializer, StandardFloatSerializer, StandardDoubleSerializer, StandardBigDecimalSerializer, StandardCharSerializer, StandardStringSerializer, StandardByteArraySerializer, StandardLocalDateSerializer, StandardLocalTimeSerializer, StandardLocalDateTimeSerializer, StandardOffsetDateTimeSerializer, StandardCollectionSerializer, StandardMapSerializer, StandardStructSerializer {
     @Override
     public final boolean equals(@Nullable Object object) {
         // All subclasses are singletons, so equality is identity

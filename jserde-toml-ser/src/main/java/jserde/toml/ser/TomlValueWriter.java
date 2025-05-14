@@ -25,6 +25,10 @@ import java.io.Reader;
 import java.io.Writer;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import jserde.core.ser.DataMapWriter;
 import jserde.core.ser.DataSequenceWriter;
 import jserde.core.ser.DataStructWriter;
@@ -145,6 +149,30 @@ public final class TomlValueWriter implements DataValueWriter {
 
     @Override
     public void serializeByteArray(byte[] value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void serializeLocalDate(LocalDate value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void serializeLocalTime(LocalTime value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void serializeLocalDateTime(LocalDateTime value) throws IOException {
+        // TODO: Implement
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public void serializeOffsetDateTime(OffsetDateTime value) throws IOException {
         // TODO: Implement
         throw new UnsupportedOperationException();
     }
