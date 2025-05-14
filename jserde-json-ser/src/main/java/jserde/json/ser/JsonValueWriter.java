@@ -64,8 +64,7 @@ import org.jspecify.annotations.Nullable;
 public final class JsonValueWriter implements DataValueWriter {
     public static final JsonStyle DEFAULT_STYLE = JsonStyle.MINIFIED;
 
-    // TODO #improvement: Make max nesting depth configurable
-    private static final int MAX_NESTING_DEPTH = 100;
+    public static final int DEFAULT_MAX_NESTING_DEPTH = 500;
 
     private final class JsonStringWriter extends AbstractWriter {
         // TODO: Consider using java.util.HexFormat
@@ -241,6 +240,11 @@ public final class JsonValueWriter implements DataValueWriter {
     private final JsonStringWriter stringWriter = new JsonStringWriter();
 
     /**
+     * Maximum nesting depth.
+     */
+    private int maxNestingDepth = DEFAULT_MAX_NESTING_DEPTH;
+
+    /**
      * Current nesting depth.
      */
     private int nestingDepth;
@@ -291,6 +295,14 @@ public final class JsonValueWriter implements DataValueWriter {
     // NOTE: This is not annotated with @MustBeClosed, as not all Writer subclasses require to be closed
     public JsonValueWriter(OutputStream output, JsonStyle style) {
         this(new OutputStreamWriter(output, JsonFormat.DEFAULT_CHARSET), style);
+    }
+
+    public int getMaxNestingDepth() {
+        return maxNestingDepth;
+    }
+
+    public void setMaxNestingDepth(int maxNestingDepth) {
+        this.maxNestingDepth = maxNestingDepth;
     }
 
     // DataValueWriter methods
@@ -411,15 +423,21 @@ public final class JsonValueWriter implements DataValueWriter {
     }
 
     private void beforeOpenContainerWriter() throws SerializationException {
-        if (nestingDepth == MAX_NESTING_DEPTH) {
-            throw new SerializationException("The maximum nesting depth of " + MAX_NESTING_DEPTH + " has been reached");
+        if (maxNestingDepth >= 0) {
+            // NOTE: We don't increment nestingDepth if maxNestingDepth is unlimited
+            if (nestingDepth == maxNestingDepth) {
+                throw new SerializationException("The maximum nesting depth of " + maxNestingDepth + " has been reached");
+            }
+            ++nestingDepth;
         }
-        ++nestingDepth;
     }
 
     private void afterCloseContainerWriter() {
-        --nestingDepth;
-        assert nestingDepth >= 0;
+        if (maxNestingDepth >= 0) {
+            // NOTE: We don't decrement nestingDepth if maxNestingDepth is unlimited
+            --nestingDepth;
+            assert nestingDepth >= 0;
+        }
     }
 
     @MustBeClosed
