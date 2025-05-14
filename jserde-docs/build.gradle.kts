@@ -56,6 +56,14 @@ val aggregateJavadoc by tasks.registering(Exec::class) {
             // ... and add their Java sources to the source files
             sourceFiles += sourceSet.java
         }
+    // Package groups
+    val groups = mapOf(
+        "Core" to setOf("jserde.core", "jserde.core.de", "jserde.core.ser"),
+        "Service" to setOf("jserde.service.de", "jserde.service.ser"),
+        "JSON" to setOf("jserde.json", "jserde.json.de", "jserde.json.model", "jserde.json.ser"),
+        "JSON5" to setOf("jserde.json5", "jserde.json5.de", "jserde.json5.ser"),
+        "TOML" to setOf("jserde.toml", "jserde.toml.de", "jserde.toml.ser"),
+    )
     // Collect subprojects...
     val links = rootProject.subprojects.flatMap { subproject ->
         // ... and get their Javadoc tasks (typically only one, i.e. `javadoc`)...
@@ -77,8 +85,11 @@ val aggregateJavadoc by tasks.registering(Exec::class) {
         writer.println("-encoding UTF-8")
         writer.println("-d '${destDir.path}'")
         writer.println("-docencoding UTF-8")
+        writer.println("-locale en_US")
+        writer.println("-docfilessubdirs")
         writer.println("-doctitle '$title'")
         writer.println("-windowtitle '$title'")
+        writer.println("-bottom 'Copyright &copy; 2025 JSerde'")
         writer.println("-protected")
         writer.println("--show-members protected")
         writer.println("--show-module-contents api")
@@ -87,12 +98,14 @@ val aggregateJavadoc by tasks.registering(Exec::class) {
         writer.println("-version")
         writer.println("-author")
         writer.println("-notimestamp")
+        groups.forEach { (name, packages) ->
+            writer.println("-group '$name' '${packages.joinToString(":")}'")
+        }
         links.forEach { link ->
             writer.println("-link '$link'")
         }
         writer.println("-quiet")
-        // Make this task succeed even if errors are reported by Javadoc
-        writer.println("-Xdoclint:none")
+        writer.println("-Xdoclint:html,reference,syntax")
         sourceFiles.forEach { sourceFile ->
             writer.println(sourceFile.path)
         }
