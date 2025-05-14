@@ -20,6 +20,10 @@ import java.io.IOException;
 import java.io.StringWriter;
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 import jserde.core.ser.ValueSerializer;
@@ -31,9 +35,13 @@ import jserde.core.ser.standard.StandardCharSerializer;
 import jserde.core.ser.standard.StandardDoubleSerializer;
 import jserde.core.ser.standard.StandardFloatSerializer;
 import jserde.core.ser.standard.StandardIntSerializer;
+import jserde.core.ser.standard.StandardLocalDateSerializer;
+import jserde.core.ser.standard.StandardLocalDateTimeSerializer;
+import jserde.core.ser.standard.StandardLocalTimeSerializer;
 import jserde.core.ser.standard.StandardLongSerializer;
 import jserde.core.ser.standard.StandardNullSerializer;
 import jserde.core.ser.standard.StandardObjectSerializer;
+import jserde.core.ser.standard.StandardOffsetDateTimeSerializer;
 import jserde.core.ser.standard.StandardShortSerializer;
 import jserde.core.ser.standard.StandardStringSerializer;
 import jserde.core.ser.text.Indentation;
@@ -204,6 +212,41 @@ class JsonValueWriterTests extends AbstractTests {
     })
     void testSerializeString(String value, String json) throws IOException {
         assertEquals(json, serializeValue(value, StandardStringSerializer.INSTANCE));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'2025-05-01', '\"2025-05-01\"'",
+    })
+    void testSerializeLocalDate(LocalDate value, String json) throws IOException {
+        assertEquals(json, serializeValue(value, StandardLocalDateSerializer.INSTANCE));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'17:49:13', '\"17:49:13\"'",
+        "'17:49:13.123', '\"17:49:13.123\"'",
+    })
+    void testSerializeLocalTime(LocalTime value, String json) throws IOException {
+        assertEquals(json, serializeValue(value, StandardLocalTimeSerializer.INSTANCE));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'2025-05-01T17:49:13', '\"2025-05-01T17:49:13Z\"'",
+        "'2025-05-01T17:49:13.123', '\"2025-05-01T17:49:13.123Z\"'",
+    })
+    void testSerializeLocalDateTime(LocalDateTime value, String json) throws IOException {
+        assertEquals(json, serializeValue(value, StandardLocalDateTimeSerializer.INSTANCE));
+    }
+
+    @ParameterizedTest
+    @CsvSource({
+        "'2025-05-01T17:49:13+02', '\"2025-05-01T17:49:13+02:00\"'",
+        "'2025-05-01T17:49:13.123+02', '\"2025-05-01T17:49:13.123+02:00\"'",
+    })
+    void testSerializeOffsetDateTime(OffsetDateTime value, String json) throws IOException {
+        assertEquals(json, serializeValue(value, StandardOffsetDateTimeSerializer.INSTANCE));
     }
 
     @ParameterizedTest

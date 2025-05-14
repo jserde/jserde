@@ -33,6 +33,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 import jserde.core.ser.DataMapWriter;
 import jserde.core.ser.DataSequenceWriter;
@@ -69,6 +71,24 @@ public final class JsonValueWriter implements DataValueWriter {
     public static final JsonStyle DEFAULT_STYLE = JsonStyle.MINIFIED;
 
     public static final int DEFAULT_MAX_NESTING_DEPTH = 500;
+
+    /**
+     * {@link DateTimeFormatter} used for {@link LocalDate} values.
+     */
+    private static final DateTimeFormatter LOCAL_DATE_FORMATTER = DateTimeFormatter.ISO_LOCAL_DATE;
+
+    /**
+     * {@link DateTimeFormatter} used for {@link LocalTime} values.
+     */
+    private static final DateTimeFormatter LOCAL_TIME_FORMATTER = DateTimeFormatter.ISO_LOCAL_TIME;
+
+    /**
+     * {@link DateTimeFormatter} used for {@link OffsetDateTime} values (and therefore {@link LocalDateTime} values).
+     */
+    private static final DateTimeFormatter OFFSET_DATE_TIME_FORMATTER = DateTimeFormatter.ISO_OFFSET_DATE_TIME;
+
+    // TODO #improvement: Make max nesting depth configurable
+    private static final int MAX_NESTING_DEPTH = 100;
 
     private final class JsonStringWriter extends AbstractWriter {
         // TODO: Consider using java.util.HexFormat
@@ -394,35 +414,24 @@ public final class JsonValueWriter implements DataValueWriter {
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public void serializeLocalDate(LocalDate value) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        serializeString(LOCAL_DATE_FORMATTER.format(value));
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public void serializeLocalTime(LocalTime value) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        serializeString(LOCAL_TIME_FORMATTER.format(value));
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public void serializeLocalDateTime(LocalDateTime value) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        // NOTE: Serialize a local date-time as an offset date-time at UTC
+        serializeOffsetDateTime(value.atOffset(ZoneOffset.UTC));
     }
 
     @Override
-    // TODO: Remove this annotation
-    @SuppressFBWarnings("BED_BOGUS_EXCEPTION_DECLARATION")
     public void serializeOffsetDateTime(OffsetDateTime value) throws IOException {
-        // TODO: Implement
-        throw new UnsupportedOperationException();
+        serializeString(OFFSET_DATE_TIME_FORMATTER.format(value));
     }
 
     @Override
