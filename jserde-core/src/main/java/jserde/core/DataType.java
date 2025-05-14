@@ -18,6 +18,10 @@ package jserde.core;
 
 import java.math.BigDecimal;
 import java.math.BigInteger;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.OffsetDateTime;
 import static java.util.Collections.unmodifiableSet;
 import java.util.EnumSet;
 import java.util.List;
@@ -187,6 +191,54 @@ public enum DataType {
     BYTE_ARRAY,
 
     /**
+     * Date without a time.
+     *
+     * <p>Corresponds to the Java {@link LocalDate} class.
+     */
+    LOCAL_DATE {
+        @Override
+        public boolean isTime() {
+            return true;
+        }
+    },
+
+    /**
+     * Time without a date.
+     *
+     * <p>Corresponds to the Java {@link LocalTime} class.
+     */
+    LOCAL_TIME {
+        @Override
+        public boolean isTime() {
+            return true;
+        }
+    },
+
+    /**
+     * Date and time.
+     *
+     * <p>Corresponds to the Java {@link LocalDateTime} class.
+     */
+    LOCAL_DATE_TIME {
+        @Override
+        public boolean isTime() {
+            return true;
+        }
+    },
+
+    /**
+     * Date and time with an offset from UTC/Greenwich.
+     *
+     * <p>Corresponds to the Java {@link OffsetDateTime} class.
+     */
+    OFFSET_DATE_TIME {
+        @Override
+        public boolean isTime() {
+            return true;
+        }
+    },
+
+    /**
      * Variably sized heterogeneous sequence of values.
      *
      * <p>Corresponds to the Java {@link List} interface.
@@ -241,6 +293,11 @@ public enum DataType {
     public static final Set<DataType> NUMERIC = unmodifiableSet(EnumSet.of(BYTE, SHORT, INT, LONG, BIG_INTEGER, FLOAT, DOUBLE, BIG_DECIMAL));
 
     /**
+     * Unmodifiable {@link Set} of all time data types.
+     */
+    public static final Set<DataType> TIME = unmodifiableSet(EnumSet.of(LOCAL_DATE, LOCAL_TIME, LOCAL_DATE_TIME, OFFSET_DATE_TIME));
+
+    /**
      * Unmodifiable {@link Set} of all container data types.
      */
     public static final Set<DataType> CONTAINERS = unmodifiableSet(EnumSet.of(SEQUENCE, MAP, STRUCT));
@@ -262,6 +319,16 @@ public enum DataType {
      * {@code false otherwise}
      */
     public boolean isNumeric() {
+        return false;
+    }
+
+    /**
+     * Returns whether this data type is a time type.
+     *
+     * @return {@code true} if this data type is a time type,
+     * {@code false otherwise}
+     */
+    public boolean isTime() {
         return false;
     }
 
