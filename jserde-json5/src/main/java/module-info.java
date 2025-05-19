@@ -25,6 +25,8 @@ import org.jspecify.annotations.NullMarked;
  * @author Laurent Pireyn
  */
 @NullMarked
+// The 5 in JSON5 is part of the name, not a version
+@SuppressWarnings("module")
 module jserde.json5 {
     requires transitive jserde.core;
     requires transitive org.jspecify;
