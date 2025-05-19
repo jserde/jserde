@@ -37,6 +37,11 @@
         <property name="files" value="[\\/]src[\\/]([a-zA-Z]*[tT]est[a-zA-Z]*|jmh)[\\/]"/>
         <property name="checks" value="(AvoidEscapedUnicodeCharacters|AnnotationUseStyle|Javadoc|MethodName|VisibilityModifier)"/>
     </module>
+    <!-- Suppress all checks for generated sources -->
+    <module name="SuppressionSingleFilter">
+        <property name="files" value="[\\/]build[\\/]generated[\\/]sources[\\/]"/>
+        <property name="checks" value=".+"/>
+    </module>
     <!-- Suppressions file -->
     <module name="SuppressionFilter">
         <property name="file" value="${config_loc}/suppressions.xml"/>
