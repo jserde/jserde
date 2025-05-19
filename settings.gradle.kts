@@ -17,6 +17,7 @@
 pluginManagement {
     repositories {
         gradlePluginPortal()
+        maven("https://gitlab.com/api/v4/groups/smartefact/-/packages/maven")
     }
     includeBuild("gradle/conventions")
 }

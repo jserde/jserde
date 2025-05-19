@@ -26,5 +26,6 @@ dependencyResolutionManagement {
     repositories {
         gradlePluginPortal()
         mavenCentral()
+        maven("https://gitlab.com/api/v4/groups/smartefact/-/packages/maven")
     }
 }
