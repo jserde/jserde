@@ -28,5 +28,6 @@ dependencies {
     api("org.asciidoctor.jvm.convert:org.asciidoctor.jvm.convert.gradle.plugin:4.0.4")
     api("org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0")
     api("org.jboss.forge.roaster:roaster-api:$roasterVersion")
+    api("smartefact:smartefact.gradle.plugin.javacc:0.2.1")
     runtimeOnly("org.jboss.forge.roaster:roaster-jdt:$roasterVersion")
 }
