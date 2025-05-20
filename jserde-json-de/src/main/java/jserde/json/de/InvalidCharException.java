@@ -17,8 +17,8 @@
 package jserde.json.de;
 
 import java.io.Serial;
-import java.util.HexFormat;
 import jserde.core.de.InvalidSyntaxException;
+import jserde.core.util.StringUtils;
 
 /**
  * {@link InvalidSyntaxException} thrown when an invalid character is read.
@@ -27,13 +27,11 @@ import jserde.core.de.InvalidSyntaxException;
  */
 // TODO #design: Consider moving this class to jserde-core-de
 public class InvalidCharException extends InvalidSyntaxException {
-    private static final HexFormat HEX_FORMAT = HexFormat.of();
-
     @Serial private static final long serialVersionUID = 1L;
 
     private static String createMessage(int invalidChar, int line, int column, String expected) {
         final var message = new StringBuilder(100);
-        message.append("Invalid ").append(charDescription(invalidChar));
+        message.append("Invalid ").append(StringUtils.charDescription(invalidChar));
         if (line != -1) {
             assert column != -1;
             message.append(" at line ").append(line)
@@ -41,27 +39,6 @@ public class InvalidCharException extends InvalidSyntaxException {
         }
         message.append("; expected ").append(expected);
         return message.toString();
-    }
-
-    private static String charDescription(int c) {
-        return c >= 0
-            ? "character '" + escaped((char) c) + "' (" + Integer.toUnsignedString(c) + ')'
-            : "EOF";
-    }
-
-    private static String escaped(char c) {
-        return switch (c) {
-            case '\\' -> "\\\\";
-            case '\'' -> "\\'";
-            case '\b' -> "\\b";
-            case '\t' -> "\\t";
-            case '\n' -> "\\n";
-            case '\f' -> "\\f";
-            case '\r' -> "\\r";
-            default -> c < ' '
-                ? "\\u" + HEX_FORMAT.toHexDigits(c)
-                : String.valueOf(c);
-        };
     }
 
     private final int invalidChar;
