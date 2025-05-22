@@ -63,11 +63,11 @@ public non-sealed interface DataMapReader extends DataContainerReader {
     <T extends @Nullable Object> T entryValue(ValueDeserializer<T> deserializer) throws IOException;
 
     /**
-     * Returns the number of entries remaining in the map, if known.
+     * Returns the number of entries in the map, if known.
      *
      * <p>The default implementation returns -1.
      *
-     * @return the number of entries remaining in the map,
+     * @return the number of entries in the map,
      * or -1 if it is not known
      */
     default int getSizeHint() {

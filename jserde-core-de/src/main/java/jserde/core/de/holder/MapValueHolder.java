@@ -85,7 +85,7 @@ public final class MapValueHolder extends DataValueHolder {
 
         @Override
         public int getSizeHint() {
-            return value.size() - index;
+            return value.size();
         }
     }
 

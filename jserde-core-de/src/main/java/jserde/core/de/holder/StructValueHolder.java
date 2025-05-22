@@ -79,7 +79,7 @@ public final class StructValueHolder extends DataValueHolder {
 
         @Override
         public int getSizeHint() {
-            return value.size() - index;
+            return value.size();
         }
     }
 

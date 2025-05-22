@@ -47,11 +47,11 @@ public non-sealed interface DataSequenceReader extends DataContainerReader {
     <T extends @Nullable Object> T nextElement(ValueDeserializer<T> deserializer) throws IOException;
 
     /**
-     * Returns the number of elements remaining in the sequence, if known.
+     * Returns the number of elements in the sequence, if known.
      *
      * <p>The default implementation returns -1.
      *
-     * @return the number of elements remaining in the sequence,
+     * @return the number of elements in the sequence,
      * or -1 if it is not known
      */
     default int getSizeHint() {

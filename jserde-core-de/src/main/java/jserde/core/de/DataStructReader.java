@@ -61,11 +61,11 @@ public non-sealed interface DataStructReader extends DataContainerReader {
     <T extends @Nullable Object> T fieldValue(ValueDeserializer<T> deserializer) throws IOException;
 
     /**
-     * Returns the number of fields remaining in the struct, if known.
+     * Returns the number of fields in the struct, if known.
      *
      * <p>The default implementation returns -1.
      *
-     * @return the number of fields remaining in the struct,
+     * @return the number of fields in the struct,
      * or -1 if it is not known
      */
     default int getSizeHint() {
