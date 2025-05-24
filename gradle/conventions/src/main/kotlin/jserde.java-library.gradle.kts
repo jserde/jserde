@@ -14,8 +14,6 @@
  * limitations under the License.
  */
 
-import com.github.spotbugs.snom.Confidence
-import com.github.spotbugs.snom.Effort
 import com.github.spotbugs.snom.SpotBugsTask
 import net.ltgt.gradle.errorprone.errorprone
 import net.ltgt.gradle.nullaway.nullaway
