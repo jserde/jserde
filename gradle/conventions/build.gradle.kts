@@ -19,6 +19,7 @@ plugins {
 }
 
 dependencies {
+    val roasterVersion = "2.30.1.Final"
     api("com.github.spotbugs:com.github.spotbugs.gradle.plugin:6.1.11")
     api("io.morethan.jmhreport:io.morethan.jmhreport.gradle.plugin:0.9.6")
     api("me.champeau.jmh:jmh-gradle-plugin:0.7.3")
@@ -26,4 +27,6 @@ dependencies {
     api("net.ltgt.gradle:gradle-nullaway-plugin:2.2.0")
     api("org.asciidoctor.jvm.convert:org.asciidoctor.jvm.convert.gradle.plugin:4.0.4")
     api("org.barfuin.gradle.jacocolog:gradle-jacoco-log:3.1.0")
+    api("org.jboss.forge.roaster:roaster-api:$roasterVersion")
+    runtimeOnly("org.jboss.forge.roaster:roaster-jdt:$roasterVersion")
 }
