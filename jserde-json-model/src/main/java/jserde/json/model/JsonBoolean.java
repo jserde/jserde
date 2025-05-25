@@ -23,7 +23,7 @@ import jserde.json.JsonValueType;
 import org.jspecify.annotations.Nullable;
 
 /**
- * JSON null.
+ * JSON boolean.
  *
  * @author Laurent Pireyn
  */
