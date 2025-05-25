@@ -86,7 +86,7 @@ public final class JsonObject extends JsonValue implements Map<String, JsonValue
     }
 
     @Override
-    public JsonValue get(@Nullable Object key) {
+    public @Nullable JsonValue get(@Nullable Object key) {
         return map.get(key);
     }
 
@@ -111,22 +111,22 @@ public final class JsonObject extends JsonValue implements Map<String, JsonValue
     }
 
     @Override
-    public JsonValue computeIfAbsent(String key, Function<? super String, ? extends JsonValue> mappingFunction) {
+    public @Nullable JsonValue computeIfAbsent(String key, Function<? super String, ? extends @Nullable JsonValue> mappingFunction) {
         return map.computeIfAbsent(key, mappingFunction);
     }
 
     @Override
-    public @Nullable JsonValue computeIfPresent(String key, BiFunction<? super String, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+    public @Nullable JsonValue computeIfPresent(String key, BiFunction<? super String, ? super JsonValue, ? extends @Nullable JsonValue> remappingFunction) {
         return map.computeIfPresent(key, remappingFunction);
     }
 
     @Override
-    public JsonValue compute(String key, BiFunction<? super String, ? super @Nullable JsonValue, ? extends JsonValue> remappingFunction) {
+    public @Nullable JsonValue compute(String key, BiFunction<? super String, ? super @Nullable JsonValue, ? extends @Nullable JsonValue> remappingFunction) {
         return map.compute(key, remappingFunction);
     }
 
     @Override
-    public JsonValue merge(String key, JsonValue value, BiFunction<? super JsonValue, ? super JsonValue, ? extends JsonValue> remappingFunction) {
+    public @Nullable JsonValue merge(String key, JsonValue value, BiFunction<? super JsonValue, ? super JsonValue, ? extends @Nullable JsonValue> remappingFunction) {
         return map.merge(key, value, remappingFunction);
     }
 
