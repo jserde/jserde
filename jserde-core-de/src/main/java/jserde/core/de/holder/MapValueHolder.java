@@ -16,6 +16,7 @@
 
 package jserde.core.de.holder;
 
+import com.google.errorprone.annotations.ForOverride;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.util.Iterator;
@@ -35,7 +36,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Laurent Pireyn
  */
-public final class MapValueHolder extends DataValueHolder {
+public non-sealed class MapValueHolder extends DataValueHolder {
     private final class DataMapReaderImpl implements DataMapReader {
         private final Iterator<? extends Entry<? extends @Nullable Object, ? extends @Nullable Object>> iterator = value.entrySet().iterator();
         private @Nullable Entry<? extends @Nullable Object, ? extends @Nullable Object> nextEntry = computeNextEntry();
@@ -58,7 +59,7 @@ public final class MapValueHolder extends DataValueHolder {
             // FIXME: Throw IllegalStateException if this is invoked twice
             final DataValueReader reader;
             try {
-                reader = on(nextEntry.getKey());
+                reader = createEntryKeyReader(nextEntry.getKey());
             } catch (IllegalArgumentException e) {
                 throw new DeserializationException("Cannot create data value reader for key of entry #" + index + " in map", e);
             }
@@ -73,7 +74,7 @@ public final class MapValueHolder extends DataValueHolder {
             // FIXME: Throw IllegalStateException if this is invoked twice
             final DataValueReader reader;
             try {
-                reader = on(nextEntry.getValue());
+                reader = createEntryValueReader(nextEntry.getValue());
             } catch (IllegalArgumentException e) {
                 throw new DeserializationException("Cannot create data value reader for value of entry with key " + nextEntry.getKey() + " (#" + index + ") in map", e);
             }
@@ -97,7 +98,35 @@ public final class MapValueHolder extends DataValueHolder {
     }
 
     @Override
-    <T extends @Nullable Object> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
+    final <T extends @Nullable Object> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
         return visitor.visitMap(new DataMapReaderImpl());
+    }
+
+    /**
+     * Creates a {@link DataValueReader} for the given entry key.
+     *
+     * <p>This implementation invokes {@link DataValueHolder#on(Object)}.
+     *
+     * @param key the entry key
+     * @return a value reader for {@code key}
+     * @throws IllegalArgumentException if no value reader can be created for {@code key}
+     */
+    @ForOverride
+    protected DataValueReader createEntryKeyReader(@Nullable Object key) {
+        return on(key);
+    }
+
+    /**
+     * Creates a {@link DataValueReader} for the given entry value.
+     *
+     * <p>This implementation invokes {@link DataValueHolder#on(Object)}.
+     *
+     * @param value the entry value
+     * @return a value reader for {@code value}
+     * @throws IllegalArgumentException if no value reader can be created for {@code value}
+     */
+    @ForOverride
+    protected DataValueReader createEntryValueReader(@Nullable Object value) {
+        return on(value);
     }
 }

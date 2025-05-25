@@ -16,6 +16,7 @@
 
 package jserde.core.de.holder;
 
+import com.google.errorprone.annotations.ForOverride;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.util.Iterator;
@@ -35,7 +36,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Laurent Pireyn
  */
-public final class StructValueHolder extends DataValueHolder {
+public non-sealed class StructValueHolder extends DataValueHolder {
     private final class DataStructReaderImpl implements DataStructReader {
         private final Iterator<? extends Entry<String, ? extends @Nullable Object>> iterator = value.entrySet().iterator();
         private @Nullable Entry<String, ? extends @Nullable Object> nextEntry = computeNextEntry();
@@ -67,7 +68,7 @@ public final class StructValueHolder extends DataValueHolder {
             // FIXME: Throw IllegalStateException if this is invoked twice
             final DataValueReader reader;
             try {
-                reader = on(nextEntry.getValue());
+                reader = createFieldValueReader(nextEntry.getValue());
             } catch (IllegalArgumentException e) {
                 throw new DeserializationException("Cannot create data value reader for value of field \"" + nextEntry.getKey() + "\" (#" + index + ") in struct", e);
             }
@@ -91,7 +92,21 @@ public final class StructValueHolder extends DataValueHolder {
     }
 
     @Override
-    <T extends @Nullable Object> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
+    final <T extends @Nullable Object> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
         return visitor.visitStruct(new DataStructReaderImpl());
+    }
+
+    /**
+     * Creates a {@link DataValueReader} for the given field value.
+     *
+     * <p>This implementation invokes {@link DataValueHolder#on(Object)}.
+     *
+     * @param value the field value
+     * @return a value reader for {@code value}
+     * @throws IllegalArgumentException if no value reader can be created for {@code value}
+     */
+    @ForOverride
+    protected DataValueReader createFieldValueReader(@Nullable Object value) {
+        return on(value);
     }
 }

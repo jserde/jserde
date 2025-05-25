@@ -16,6 +16,7 @@
 
 package jserde.core.de.holder;
 
+import com.google.errorprone.annotations.ForOverride;
 import edu.umd.cs.findbugs.annotations.SuppressFBWarnings;
 import java.io.IOException;
 import java.util.Collection;
@@ -33,7 +34,7 @@ import org.jspecify.annotations.Nullable;
  *
  * @author Laurent Pireyn
  */
-public final class SequenceValueHolder extends DataValueHolder {
+public non-sealed class SequenceValueHolder extends DataValueHolder {
     private final class DataSequenceReaderImpl implements DataSequenceReader {
         private final Iterator<? extends @Nullable Object> iterator = value.iterator();
         private int index;
@@ -47,7 +48,7 @@ public final class SequenceValueHolder extends DataValueHolder {
         public <T extends @Nullable Object> T nextElement(ValueDeserializer<T> deserializer) throws IOException {
             final DataValueReader reader;
             try {
-                reader = on(iterator.next());
+                reader = createElementReader(iterator.next());
             } catch (IllegalArgumentException e) {
                 throw new DeserializationException("Cannot create data value reader for element #" + index + " in collection", e);
             }
@@ -72,5 +73,19 @@ public final class SequenceValueHolder extends DataValueHolder {
     @Override
     <T> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
         return visitor.visitSequence(new DataSequenceReaderImpl());
+    }
+
+    /**
+     * Creates a {@link DataValueReader} for the given element.
+     *
+     * <p>This implementation invokes {@link DataValueHolder#on(Object)}.
+     *
+     * @param element the element
+     * @return a value reader for {@code element}
+     * @throws IllegalArgumentException if no value reader can be created for {@code element}
+     */
+    @ForOverride
+    protected DataValueReader createElementReader(@Nullable Object element) {
+        return on(element);
     }
 }
