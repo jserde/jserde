@@ -71,7 +71,7 @@ public non-sealed class SequenceValueHolder extends DataValueHolder {
     }
 
     @Override
-    <T> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
+    <T extends @Nullable Object> T deserializeValue(DataValueVisitor<T> visitor) throws IOException {
         return visitor.visitSequence(new DataSequenceReaderImpl());
     }
 
